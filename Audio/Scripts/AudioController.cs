@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace RedHeadToolz.AudioChannel
+namespace RedHeadToolz.Audio
 {
     public class AudioController : MonoBehaviour
     {

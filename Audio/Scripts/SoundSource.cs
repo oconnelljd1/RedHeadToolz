@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RedHeadToolz.AudioChannel
+namespace RedHeadToolz.Audio
 {
     public class SoundSource : MonoBehaviour
     {

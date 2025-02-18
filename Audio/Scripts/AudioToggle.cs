@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace RedHeadToolz.AudioChannel
+namespace RedHeadToolz.Audio
 {
     public class AudioToggle : MonoBehaviour
     {
