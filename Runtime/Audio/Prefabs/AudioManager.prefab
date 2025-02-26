@@ -41,8 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1760927802605002813}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5242ba0dd82708940b97f8ec830b964e, type: 3}
+  m_Script: {fileID: 11500000, guid: 37a79db10873ee840b67f1e3544ada04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _channelPrefab: {fileID: 5817314786559344485, guid: 7e95388ff73d4734baea1e1c686dd484, type: 3}
+  _channelPrefab: {fileID: 5817314786559344485, guid: 9b50f0d072928ce4cb2c129a7479c626, type: 3}
+  _channelIds: []
   _clips: []

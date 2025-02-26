@@ -1,10 +1,10 @@
 {
-    "name": "RedHeadGamez.RedHeadToolz.Editor",
+    "name": "RedHeadGamez.RedHeadToolz.Samples",
     "rootNamespace": "RedHeadToolz",
-    "references": [],
-    "includePlatforms": [
-        "Editor"
+    "references": [
+        "GUID:2b30d384aa31d80439444ea39096e8d8"
     ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
