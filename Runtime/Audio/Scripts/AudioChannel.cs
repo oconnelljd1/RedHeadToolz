@@ -17,6 +17,18 @@ namespace RedHeadToolz.Audio
         private float killTime = 10f;
         private bool _muted = false;
 
+        public bool isPlaying
+        {
+            get
+            {
+                foreach(var source in _sources)
+                {
+                    if(source.Playing) return true;
+                }
+                return false;
+            }
+        }
+
         public void Init(string id, int poolSize = 1, float killTime = 10f)
         {
             this.id = id;
