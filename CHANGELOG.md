@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [0.1.1] 
 
+### Added
+List extension for getting random item
+
+### Changed
+settled on an extension for generic tools
+
+## [0.1.1] 
+
 ### Fixed
 fixed bug caused by find and replace that was missed due to other compiler errors
 

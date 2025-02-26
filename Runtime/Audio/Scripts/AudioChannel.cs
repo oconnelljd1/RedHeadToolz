@@ -17,7 +17,7 @@ namespace RedHeadToolz.Audio
         private float killTime = 10f;
         private bool _muted = false;
 
-        public bool isPlaying
+        public bool IsPlaying
         {
             get
             {

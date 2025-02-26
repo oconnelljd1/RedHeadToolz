@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using RedHeadToolz.Audio;
 
-namespace RedHeadToolz.Tools
+namespace RedHeadToolz.Utils
 {
     public class InitController : MonoBehaviour
     {

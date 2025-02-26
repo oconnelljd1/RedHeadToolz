@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RedHeadToolz.Tools
+namespace RedHeadToolz.Utils
 {
     public class EloMate : MonoBehaviour
     {
