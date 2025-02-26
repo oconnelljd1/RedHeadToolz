@@ -2,7 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.1] 
+## [0.1.3] 
+
+### Changed
+Added instructions for importing Elomate
+
+## [0.1.2] 
 
 ### Added
 List extension for getting random item
