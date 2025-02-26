@@ -5,35 +5,33 @@ using UnityEngine;
 
 namespace RedHeadToolz.Audio
 {
-    public class AudioController : MonoBehaviour
+    public class AudioController : Singleton<AudioController>
     {
-        public static AudioController Instance;
         [SerializeField] private GameObject _channelPrefab;
+        [SerializeField] private List<string> _channelIds;
         [SerializeField] private List<AudioClip> _clips;
         private List<AudioChannel> _channels = new List<AudioChannel>();
 
-        // Start is called before the first frame update
-        void Awake()
+        protected override void Awake()
         {
-            if(Instance)
-                Destroy(gameObject);
-            
-            Instance = this;
-            DontDestroyOnLoad(this);
+            base.Awake();
+
+            foreach(var id in _channelIds)
+            {
+                AddChannel(id);
+            }
         }
 
         public void AddChannel(string id, int sources = 1)
         {
-            foreach(var chan in _channels)
+            AudioChannel channel = _channels.Find(x => x.Id == id);
+            if(channel != null)
             {
-                if(chan.Id == id)
-                {
-                    Debug.LogError($"Channel with Id {id} already exists, aborting.");
-                    return;
-                }
+                Debug.LogError($"Channel with Id {id} already exists, aborting.");
+                return;
             }
 
-            AudioChannel channel = Instantiate(_channelPrefab, gameObject.transform).GetComponent<AudioChannel>();
+            Instantiate(_channelPrefab, gameObject.transform).GetComponent<AudioChannel>();
             channel.Init(id, sources);
 
             _channels.Add(channel);
