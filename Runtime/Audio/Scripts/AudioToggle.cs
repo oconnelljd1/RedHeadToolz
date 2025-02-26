@@ -10,7 +10,7 @@ namespace RedHeadToolz.Audio
         [SerializeField] private string _channel;
         [SerializeField] private GameObject _activeSprite;
         [SerializeField] private GameObject _mutedSprite;
-        private Audio _Audio;
+        private AudioChannel _Audio;
         private bool _muted = false;
         
         // Start is called before the first frame update

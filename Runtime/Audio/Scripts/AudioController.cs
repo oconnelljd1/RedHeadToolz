@@ -10,7 +10,7 @@ namespace RedHeadToolz.Audio
         public static AudioController Instance;
         [SerializeField] private GameObject _channelPrefab;
         [SerializeField] private List<AudioClip> _clips;
-        private List<Audio> _channels = new List<Audio>();
+        private List<AudioChannel> _channels = new List<AudioChannel>();
 
         // Start is called before the first frame update
         void Awake()
@@ -33,13 +33,13 @@ namespace RedHeadToolz.Audio
                 }
             }
 
-            Audio channel = Instantiate(_channelPrefab, gameObject.transform).GetComponent<Audio>();
+            AudioChannel channel = Instantiate(_channelPrefab, gameObject.transform).GetComponent<AudioChannel>();
             channel.Init(id, sources);
 
             _channels.Add(channel);
         }
 
-        public Audio GetChannel(string channel)
+        public AudioChannel GetChannel(string channel)
         {
             return _channels.Find(x=>x.Id == channel);
         }

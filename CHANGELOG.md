@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.1] 
+
+### Fixed
+fixed bug caused by find and replace that was missed due to other compiler errors
+
 ## [0.1.0] 
 
 ### Removed

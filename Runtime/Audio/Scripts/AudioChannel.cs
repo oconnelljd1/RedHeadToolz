@@ -6,7 +6,7 @@ using UnityEngine;
 namespace RedHeadToolz.Audio
 {
 
-    public class Audio : MonoBehaviour
+    public class AudioChannel : MonoBehaviour
     {
         public bool Muted => _muted;
         [SerializeField] private GameObject _sourcePrefab;
