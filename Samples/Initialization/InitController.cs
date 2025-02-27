@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using RedHeadToolz.Audio;
+using RedHeadToolz.Screens;
 
 namespace RedHeadToolz.Tools
 {
@@ -18,6 +19,8 @@ namespace RedHeadToolz.Tools
         void Update()
         {
             if (AudioController.Instance == null) return;
+
+            if(ScreenManager.Instance == null) return;
 
             SceneManager.LoadScene("MainMenu");
         }
