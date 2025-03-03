@@ -1,40 +1,43 @@
 using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+namespace RedHeadToolz.Utils
 {
-    private static T _instance;
-    private static readonly object _lock = new object();
-
-    protected Singleton() { }
-
-    public static T Instance
+    public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
-        get
+        private static T _instance;
+        private static readonly object _lock = new object();
+
+        protected Singleton() { }
+
+        public static T Instance
         {
-            lock (_lock)
+            get
             {
-                if (_instance == null)
+                lock (_lock)
                 {
-                    GameObject singleton = new GameObject();
-                    _instance = singleton.AddComponent<T>();
-                    singleton.name = typeof(T).ToString() + " (Singleton)";
+                    if (_instance == null)
+                    {
+                        GameObject singleton = new GameObject();
+                        _instance = singleton.AddComponent<T>();
+                        singleton.name = typeof(T).ToString() + " (Singleton)";
 
-                    DontDestroyOnLoad(singleton);
+                        DontDestroyOnLoad(singleton);
+                    }
                 }
+                return _instance;
             }
-            return _instance;
         }
-    }
 
-    protected virtual void Awake()
-    {
-        if (_instance == null)
+        protected virtual void Awake()
         {
-            _instance = (T)this;
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
+            if (_instance == null)
+            {
+                _instance = (T)this;
+            }
+            else if (_instance != this)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
