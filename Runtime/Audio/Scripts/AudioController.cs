@@ -8,7 +8,7 @@ namespace RedHeadToolz.Audio
     public class AudioController : Singleton<AudioController>
     {
         [SerializeField] private GameObject _channelPrefab;
-        [SerializeField] private List<string> _channelIds;
+        [SerializeField] private List<string> _channelIds = new List<string>();
         [SerializeField] private List<AudioClip> _clips;
         private List<AudioChannel> _channels = new List<AudioChannel>();
 
@@ -31,7 +31,7 @@ namespace RedHeadToolz.Audio
                 return;
             }
 
-            Instantiate(_channelPrefab, gameObject.transform).GetComponent<AudioChannel>();
+            channel = Instantiate(_channelPrefab, gameObject.transform).GetComponent<AudioChannel>();
             channel.Init(id, sources);
 
             _channels.Add(channel);
