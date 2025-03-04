@@ -1,29 +1,22 @@
 using System;
 using System.Collections.Generic;
+using RedHeadToolz.Debugging;
+using RedHeadToolz.Utils;
 using UnityEngine;
 
 namespace RedHeadToolz.Screens
 {
-    public class ScreenManager : MonoBehaviour
+    public class ScreenManager : Singleton<ScreenManager>
     {
-        public static ScreenManager Instance;
         [SerializeField] private List<BaseScreen> ScreenList;
         private List<BaseScreen> _screenStack = new List<BaseScreen>();
-
-        public void Awake()
-        {
-            if(Instance)
-                Destroy(gameObject);
-            
-            Instance = this;
-        }
 
         public T AddScreen<T>() where T : BaseScreen
         {
             var screen = ScreenList.Find(s => s is T);
             if (screen == null)
             {
-                Debug.LogError($"Screen of type {typeof(T)} not found in ScreenList");
+                RHTebug.LogError($"Screen of type {typeof(T)} not found in ScreenList");
                 return null;
             }
 
@@ -58,7 +51,7 @@ namespace RedHeadToolz.Screens
             var screen = _screenStack.Find(x => x.GetType() == typeof(T));
             if (screen == null)
             {
-                Debug.LogError($"Screen of type {typeof(T)} not found in the stack");
+                RHTebug.LogError($"Screen of type {typeof(T)} not found in the stack");
                 return;
             }
 
@@ -74,7 +67,7 @@ namespace RedHeadToolz.Screens
 
             if (!_screenStack.Contains(screen))
             {
-                Debug.LogError($"Screen {screen} is not in the stack");
+                RHTebug.LogError($"Screen {screen} is not in the stack");
                 return;
             }
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace RedHeadGamez.Toolz
+namespace RedHeadToolz.Utils
 {
     public class EventManager : MonoBehaviour
     {
