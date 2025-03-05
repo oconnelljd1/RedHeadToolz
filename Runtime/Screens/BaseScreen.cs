@@ -9,8 +9,8 @@ namespace RedHeadToolz.Screens
     // A class that must be extended from if you expect to use it with the ScreenManager
     public class BaseScreen : MonoBehaviour
     {
-        [SerializeField] private Transform _root;
-        [SerializeField] private GameObject _inputLock;
+        [SerializeField] protected Transform _root;
+        [SerializeField] protected GameObject _inputLock;
         [SerializeField] private bool _hideStack = false;
         public bool HideStack {
             get { return _hideStack; }
@@ -22,10 +22,10 @@ namespace RedHeadToolz.Screens
             set {}
         }
 
-        private bool _showing = false;
+        protected bool _showing = false;
         public bool Showing => _showing;
 
-        private bool _lockInput{
+        protected bool _lockInput{
             get{
                 return _inputLock.activeSelf;
             }
@@ -34,7 +34,7 @@ namespace RedHeadToolz.Screens
             }
         }
 
-        public virtual void Show()
+        public virtual void Show(Action callback = null)
         {
             _lockInput = true;
             _root.localScale = Vector3.zero;
@@ -45,6 +45,7 @@ namespace RedHeadToolz.Screens
             showSequence.Append(_root.DOScale(1.0f, 0.1f)
                 .SetEase(Ease.OutSine)
                 .OnComplete(()=>{
+                    if(callback != null) callback();
                     _lockInput = false;
                 }));
 
@@ -52,9 +53,11 @@ namespace RedHeadToolz.Screens
             showSequence.Play();
         }
 
-        public virtual void Hide()
+        public virtual void ShowImmediate()
         {
-            Hide(null);
+            _showing = true;
+            _root.localScale = Vector3.one;
+            _lockInput = false;
         }
 
         public virtual void Hide(Action callback = null)
@@ -76,9 +79,10 @@ namespace RedHeadToolz.Screens
             showSequence.Play();
         }
 
-        public virtual void Close()
+        public virtual void Close(Action callback = null)
         {
             Hide(() => {
+                if(callback != null) callback();
                 ScreenManager.Instance.CloseScreen(this);
             });
         }

@@ -44,6 +44,17 @@ namespace RedHeadToolz.Screens
             return newScreen;
         }
 
+        public T GetScreen<T>(bool createIfNull = true) where T : BaseScreen
+        {
+            var screen = _screenStack.Find(x => x.GetType() == typeof(T));
+            if (screen == null && createIfNull)
+            {
+                screen = AddScreen<T>();
+            }
+
+            return screen as T;
+        }
+
         public void CloseScreen<T>() where T : BaseScreen
         {
             if (_screenStack.Count == 0) return;
