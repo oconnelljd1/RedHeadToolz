@@ -1,3 +1,4 @@
+using RedHeadToolz.Debugging;
 using UnityEngine;
 
 namespace RedHeadToolz.Utils
@@ -13,6 +14,7 @@ namespace RedHeadToolz.Utils
         {
             get
             {
+                // RHTebug.Log("Singleton get: " + typeof(T));
                 lock (_lock)
                 {
                     if (_instance == null)
@@ -30,6 +32,7 @@ namespace RedHeadToolz.Utils
 
         protected virtual void Awake()
         {
+            // RHTebug.Log("Singleton Awake: " + typeof(T));
             if (_instance == null)
             {
                 _instance = (T)this;
