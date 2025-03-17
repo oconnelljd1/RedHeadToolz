@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.4] 
+
+### Added
+Added Screen manager
+RHTebug debug module
+State machine base
+Singleton class
+
+### Changed
+AudioController is a singleton now
+
 ## [0.1.3] 
 
 ### Changed

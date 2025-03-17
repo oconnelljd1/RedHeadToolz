@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace RedHeadToolz.Screens
 {
     // A class that must be extended from if you expect to use it with the ScreenManager
-    public class GenericScreen : BaseScreen
+    public class GenericScreen : ScaleScreen
     {
         [SerializeField] private TMP_Text _titleText;
         [SerializeField] private TMP_Text _descriptionText;

@@ -5,7 +5,8 @@ using RedHeadToolz.Debugging;
 
 namespace RedHeadToolz.Screens
 {
-    public class TransitionScreen : BaseScreen
+    // a class built to handle showing and hiding through a generic scale animation
+    public class FadeScreen : BaseScreen
     {
         [SerializeField] private CanvasGroup _group;
 
