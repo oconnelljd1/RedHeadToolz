@@ -46,5 +46,12 @@ namespace RedHeadToolz.Screens
                 ScreenManager.Instance.CloseScreen(this);
             });
         }
+
+        public virtual void Close()
+        {
+            Hide(()=>{
+                ScreenManager.Instance.CloseScreen(this);
+            });
+        }
     }
 }
