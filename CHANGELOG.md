@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 Theme-related components
+Added Screen manager
+RHTebug debug module
+State machine base
+Singleton class
+
+### Changed
+AudioController is a singleton now
 
 ## [0.1.3] 
 
