@@ -17,18 +17,6 @@ namespace RedHeadToolz.Audio
         private float killTime = 10f;
         private bool _muted = false;
 
-        public bool IsPlaying
-        {
-            get
-            {
-                foreach(var source in _sources)
-                {
-                    if(source.Playing) return true;
-                }
-                return false;
-            }
-        }
-
         public void Init(string id, int poolSize = 1, float killTime = 10f)
         {
             this.id = id;
@@ -37,9 +25,6 @@ namespace RedHeadToolz.Audio
 
             for(int i = 0; i < poolSize; i++)
             {
-                // SoundSource source = Instantiate(_sourcePrefab, gameObject.transform).GetComponent<SoundSource>();
-                // source.Init(killTime);
-                // _sources.Add(source);
                 SpawnSound().Init(killTime);
             }
         }
@@ -143,7 +128,30 @@ namespace RedHeadToolz.Audio
             }
         }
 
-        // Update is called once per frame
+        public bool IsPlaying(string clip = "")
+        {
+            if(clip == "")
+            {
+                foreach(var source in _sources)
+                {
+                    if(source.Playing)
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            foreach(var source in _sources)
+            {
+                if(source.Clip.name == clip)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void Update()
         {
             if(_sources.Count > poolSize)

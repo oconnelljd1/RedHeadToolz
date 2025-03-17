@@ -12,7 +12,6 @@ namespace RedHeadToolz.Screens
         [SerializeField] private Button _button;
         [SerializeField] private TMP_Text _text;
 
-        // Start is called before the first frame update
         public void Init(GenericButtonData data)
         {
             _text.text = data.Text;

@@ -13,7 +13,6 @@ namespace RedHeadToolz.Audio
         private AudioChannel _Audio;
         private bool _muted = false;
         
-        // Start is called before the first frame update
         void Start()
         {
             // do this in start so that Main Menu controller can create the channels in Awake

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RedHeadGamez.Toolz
+namespace RedHeadToolz.Utils
 {
     public static class ListExtensions
     {
