@@ -1,7 +1,9 @@
 {
     "name": "RedHeadGamez.RedHeadToolz.Editor",
     "rootNamespace": "RedHeadToolz",
-    "references": [],
+    "references": [
+        "GUID:2b30d384aa31d80439444ea39096e8d8"
+    ],
     "includePlatforms": [
         "Editor"
     ],
