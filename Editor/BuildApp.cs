@@ -55,10 +55,8 @@ public static class BuildApp
             options = BuildOptions.None
         };
 
-        // Build the player
         BuildReport report = BuildPipeline.BuildPlayer(buildPlayerOptions);
 
-        // Check for build success
         if (report.summary.result == BuildResult.Succeeded)
         {
             RHTebug.LogSuccess("Build succeeded: " + report.summary.totalSize + " bytes");
@@ -71,7 +69,6 @@ public static class BuildApp
 
     private static string[] GetScenes()
     {
-        // Get all enabled scenes in the build settings
         return EditorBuildSettings.scenes
             .Where(scene => scene.enabled)
             .Select(scene => scene.path)
@@ -92,7 +89,6 @@ public static class BuildApp
                 return ".app";
             case BuildTarget.WebGL:
                 return "";
-            // Add other platforms as needed
             default:
                 return "";
         }

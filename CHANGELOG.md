@@ -10,6 +10,8 @@ Added Screen manager
 RHTebug debug module
 State machine base
 Singleton class
+version management and build pipeline
+scene switcher tool
 
 ### Changed
 AudioController is a singleton now
