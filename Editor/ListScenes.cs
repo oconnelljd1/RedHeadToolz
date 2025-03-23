@@ -4,13 +4,6 @@ using UnityEditor.SceneManagement;
 
 public class ListScenes : EditorWindow
 {
-    private Vector2 scrollPosition;
-
-    [MenuItem("RedHeadToolz/Scenes/List Scenes %t")] // %t is the shortcut for Ctrl+T
-    public static void ShowWindow()
-    {
-        GetWindow<ListScenes>("Scenes in Build");
-    }
 
     private void OnGUI()
     {

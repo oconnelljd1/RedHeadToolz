@@ -6,18 +6,10 @@ using System;
 
 public static class IncrementVersion
 {
-    [MenuItem("RedHeadToolz/Version/Current Version: 0.0.0", false, 0)]
-    public static void ShowCurrentVersion()
+    [MenuItem("RedHeadToolz/Version/Print Current Version", false, 0)]
+    public static void PrintCurrentVersion()
     {
-        // This method is just a placeholder to show the current version in the menu
-    }
-
-    [MenuItem("RedHeadToolz/Version/Current Version: 0.0.0", true)]
-    public static bool ShowCurrentVersionValidation()
-    {
-        Menu.SetChecked("RedHeadToolz/Version/Current Version: 0.0.0", false);
-        Menu.SetChecked($"RedHeadToolz/Version/Current Version: {PlayerSettings.bundleVersion}", true);
-        return false; // Return false to disable the menu item
+        RHTebug.Log($"Current Version: {PlayerSettings.bundleVersion}");
     }
 
     [MenuItem("RedHeadToolz/Version/Increment Major")]

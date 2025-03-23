@@ -6,7 +6,7 @@ namespace RedHeadToolz.Debugging
     {
         public static void Log(string message)
         {
-#if !UNITY_EDITOR
+#if RELEASE
             return;
 #endif
             Debug.Log($"<color=orange>{message}</color>");
@@ -15,7 +15,7 @@ namespace RedHeadToolz.Debugging
         public static void LogWarning(string message, bool throwWarning = false)
         {
             if(throwWarning) Debug.LogWarning($"<color=red>{message}</color>");
-#if !UNITY_EDITOR
+#if RELEASE
             return;
 #endif
             if(!throwWarning)Debug.Log($"<color=yellow>{message}</color>");
@@ -24,7 +24,7 @@ namespace RedHeadToolz.Debugging
         public static void LogError(string message, bool throwError = false)
         {
             if(throwError) Debug.LogError($"<color=red>{message}</color>");
-#if !UNITY_EDITOR
+#if RELEASE
             return;
 #endif
             if(!throwError) Debug.Log($"<color=red>{message}</color>", null);
@@ -32,10 +32,16 @@ namespace RedHeadToolz.Debugging
 
         public static void LogSuccess(string message)
         {
-#if !UNITY_EDITOR
+#if RELEASE
             return;
 #endif
             Debug.Log($"<color=green>{message}</color>");
         }
     }
 }
+
+
+// replace unity editor with develop flag and 
+// have another script that when you create the project, 
+// it adds the debug flag
+// you can set toggle it off
