@@ -1,9 +1,15 @@
 using UnityEditor;
 using UnityEngine;
 using UnityEditor.SceneManagement;
+using UnityEditor.ShortcutManagement;
 
 public class ListScenes : EditorWindow
 {
+    [Shortcut("RedHeadToolz/Open List Scenes", KeyCode.T, ShortcutModifiers.Action)]
+    public static void CheckKeys()
+    {
+        GetWindow<ListScenes>("Scenes in Build");
+    }
 
     private void OnGUI()
     {
