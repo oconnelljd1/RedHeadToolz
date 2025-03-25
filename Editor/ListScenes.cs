@@ -20,7 +20,10 @@ public class ListScenes : EditorWindow
         EditorBuildSettingsScene[] scenes = EditorBuildSettings.scenes;
         foreach (EditorBuildSettingsScene scene in scenes)
         {
-            if (GUILayout.Button(scene.path, EditorStyles.label))
+            // can add more code to show more of the path if two scenes have the same name
+            string[] pathParts = scene.path.Split('/');
+            string sceneName = pathParts[pathParts.Length - 1].Replace(".unity", "");
+            if (GUILayout.Button(sceneName, EditorStyles.label))
             {
                 OpenScene(scene.path);
                 Close();
