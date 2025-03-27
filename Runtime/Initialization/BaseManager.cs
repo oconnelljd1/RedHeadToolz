@@ -1,0 +1,21 @@
+using UnityEngine;
+
+namespace RedHeadToolz
+{
+    public class BaseManager : MonoBehaviour
+    {
+        private ManagerInitializationStatus _initializationStatus;
+        public ManagerInitializationStatus InitializationStatus => _initializationStatus;
+        public bool IsInitialized => _initializationStatus == ManagerInitializationStatus.Success;
+
+        public virtual void Init()
+        {
+            _initializationStatus = ManagerInitializationStatus.Success;
+        }
+
+        public virtual void Update()
+        {
+            
+        }
+    }
+}

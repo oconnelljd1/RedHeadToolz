@@ -12,6 +12,8 @@ State machine base
 Singleton class
 version management and build pipeline
 scene switcher tool
+General manager, for managing managers
+Time manager
 
 ### Changed
 AudioController is a singleton now
