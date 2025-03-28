@@ -45,7 +45,7 @@ namespace RedHeadToolz.Audio
         {
             if(Playing)return;
 
-            currentTime += Time.deltaTime;
+            currentTime += UnityEngine.Time.deltaTime;
             // if(currentTime > killTime)
         }
 

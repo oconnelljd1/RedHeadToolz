@@ -3,62 +3,66 @@ using System.Collections.Generic;
 using RedHeadToolz;
 using UnityEngine;
 
-public class TimeManager : BaseManager
+namespace RedHeadToolz.Time
 {
-    [SerializeField] private GameObject _timerPrefab;
-    private float _timeScale = 1f;
-    public float TimeScale => _paused? 0f : _timeScale;
-
-    private bool _paused = false;
-    public bool Paused => _paused;
-
-    private List<Timer> _timers = new List<Timer>();
-
-
-    public void StartTimer(string id, float duration, Action callback = null)
+    public class TimeManager : BaseManager
     {
-        Timer timer = CreateTimer();
-        timer.Init(id, duration, callback);
-    }
+        [SerializeField] private GameObject _timerPrefab;
+        private float _timeScale = 1f;
+        public float TimeScale => _paused? 0f : _timeScale;
 
-    private Timer CreateTimer()
-    {
-        Timer timer = Instantiate(_timerPrefab, transform).GetComponent<Timer>();
-        _timers.Add(timer);
-        return timer;
-    }
+        private bool _paused = false;
+        public bool Paused => _paused;
 
-    public void RemoveTimer(Timer timer)
-    {
-        if(_timers.Contains(timer))
+        private List<Timer> _timers = new List<Timer>();
+
+
+        public Timer StartTimer(string id, float duration, Action callback = null)
         {
-            _timers.Remove(timer);
-            Destroy(timer.gameObject);
+            Timer timer = CreateTimer();
+            timer.Init(id, duration, callback);
+            return timer;
         }
-    }
 
-    public void RemoveTimer(string id)
-    {
-        Timer timer = _timers.Find(x=>x.Id == id);
-        if(timer != null)
+        private Timer CreateTimer()
         {
-            _timers.Remove(timer);
-            Destroy(timer);
+            Timer timer = Instantiate(_timerPrefab, transform).GetComponent<Timer>();
+            _timers.Add(timer);
+            return timer;
         }
-    }
 
-    public void Pause()
-    {
-        _paused = true;
-    }
+        public void RemoveTimer(Timer timer)
+        {
+            if(_timers.Contains(timer))
+            {
+                _timers.Remove(timer);
+                Destroy(timer.gameObject);
+            }
+        }
 
-    public void Unpause()
-    {
-        _paused = false;
-    }
+        public void RemoveTimer(string id)
+        {
+            Timer timer = _timers.Find(x=>x.Id == id);
+            if(timer != null)
+            {
+                _timers.Remove(timer);
+                Destroy(timer);
+            }
+        }
 
-    public void SetPaused(bool pause)
-    {
-        _paused = pause;
+        public void Pause()
+        {
+            _paused = true;
+        }
+
+        public void Unpause()
+        {
+            _paused = false;
+        }
+
+        public void SetPaused(bool pause)
+        {
+            _paused = pause;
+        }
     }
 }

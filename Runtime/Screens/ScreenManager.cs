@@ -108,5 +108,14 @@ namespace RedHeadToolz.Screens
                 }
             }
         }
+
+        public bool IsScreenOpen<T>() where T : BaseScreen
+        {
+            if(_screenStack.Count == 0) return false;
+
+            var screen = _screenStack.Find(x => x.GetType() == typeof(T));
+
+            return screen != null && screen.Showing;
+        }
     }
 }
