@@ -16,6 +16,7 @@ namespace RedHeadToolz.Time
         {
             _id = id;
             _duration = duration;
+            _callback = callback;
         }
 
         public void Update()

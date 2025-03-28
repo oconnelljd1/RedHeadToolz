@@ -46,7 +46,7 @@ namespace RedHeadToolz.Time
             if(timer != null)
             {
                 _timers.Remove(timer);
-                Destroy(timer);
+                Destroy(timer.gameObject);
             }
         }
 
