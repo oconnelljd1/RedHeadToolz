@@ -1,25 +1,25 @@
 using System.Collections.Generic;
+using RedHeadToolz.Debugging;
 using UnityEditor;
 using UnityEngine;
-using RedHeadToolz.Utils;
 
 namespace RedHeadToolz.Audio
 {
-    public class AudioController : Singleton<AudioController>
+    public class AudioManager : BaseManager
     {
         [SerializeField] private GameObject _channelPrefab;
         [SerializeField] private List<string> _channelIds = new List<string>();
         [SerializeField] private List<AudioClip> _clips;
         private List<AudioChannel> _channels = new List<AudioChannel>();
 
-        protected override void Awake()
+        public override void Init()
         {
-            base.Awake();
-
+            RHTebug.Log("AUdio Init");
             foreach(var id in _channelIds)
             {
                 AddChannel(id);
             }
+            base.Init();
         }
 
         public void AddChannel(string id, int sources = 1)
@@ -44,7 +44,10 @@ namespace RedHeadToolz.Audio
 
         public AudioClip GetClip(string clip)
         {
-            return _clips.Find(x=>x.name == clip);
+            var newClip = _clips.Find(x=>x.name == clip);
+            if(newClip == null)
+                RHTebug.LogError($"Clip {clip} not found!");
+            return newClip;
         }
 
         // Depricate, find channels and play there
@@ -83,10 +86,10 @@ namespace RedHeadToolz.Audio
         }
 
 #if UNITY_EDITOR
-        [MenuItem("CONTEXT/AudioController/Collect Clips")]
+        [MenuItem("CONTEXT/AudioManager/Collect Clips")]
         private static void CollectClips(MenuCommand menuCommand)
         {
-            AudioController audioController = (AudioController)menuCommand.context;
+            AudioManager audioManager = (AudioManager)menuCommand.context;
 
             List<AudioClip> newClips = new List<AudioClip>();
             string[] guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Audio" });
@@ -96,8 +99,8 @@ namespace RedHeadToolz.Audio
                 newClips.Add(clip);
             }
 
-            audioController._clips = newClips;
-            EditorUtility.SetDirty(audioController);
+            audioManager._clips = newClips;
+            EditorUtility.SetDirty(audioManager);
         }
 #endif
     }

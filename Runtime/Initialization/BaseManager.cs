@@ -4,7 +4,7 @@ namespace RedHeadToolz
 {
     public class BaseManager : MonoBehaviour
     {
-        private ManagerInitializationStatus _initializationStatus;
+        protected ManagerInitializationStatus _initializationStatus = ManagerInitializationStatus.Uninitialized;
         public ManagerInitializationStatus InitializationStatus => _initializationStatus;
         public bool IsInitialized => _initializationStatus == ManagerInitializationStatus.Success;
 

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using RedHeadToolz.Debugging;
 using UnityEngine;
 
 namespace RedHeadToolz.Audio
@@ -51,12 +52,12 @@ namespace RedHeadToolz.Audio
 
         public void Play(string clip)
         {
-            Play(AudioController.Instance.GetClip(clip));
+            Play(GeneralManager.Instance.GetManager<AudioManager>().GetClip(clip));
         }
 
         public void Play(string clip, Action callback)
         {
-            Play(AudioController.Instance.GetClip(clip), callback);
+            Play(GeneralManager.Instance.GetManager<AudioManager>().GetClip(clip), callback);
         }
 
         public void Play(AudioClip clip)
@@ -86,7 +87,9 @@ namespace RedHeadToolz.Audio
 
         public void Loop(string clip)
         {
-            Loop(AudioController.Instance.GetClip(clip));
+            RHTebug.Log($"GM: {GeneralManager.Instance}");
+            RHTebug.Log($"Audio: {GeneralManager.Instance.GetManager<AudioManager>()}");
+            Loop(GeneralManager.Instance.GetManager<AudioManager>().GetClip(clip));
         }
 
         public void Loop(AudioClip clip)

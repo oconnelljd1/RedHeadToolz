@@ -15,7 +15,7 @@ namespace RedHeadToolz.Audio
         void Start()
         {
             // do this in start so that Main Menu controller can create the channels in Awake
-            _muted = AudioController.Instance.GetChannel(_channel).Muted;
+            _muted = GeneralManager.Instance.GetManager<AudioManager>().GetChannel(_channel).Muted;
             UpdateSprites();
         }
 
@@ -29,7 +29,7 @@ namespace RedHeadToolz.Audio
         {
             _muted = !_muted;
             UpdateSprites();
-            AudioController.Instance.SetChannelMuted(_channel, _muted);
+            GeneralManager.Instance.GetManager<AudioManager>().SetChannelMuted(_channel, _muted);
         }
     }
 }

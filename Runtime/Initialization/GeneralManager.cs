@@ -71,5 +71,8 @@ namespace RedHeadToolz
         // because if a module needs time to initialize...
         // whatever adds it shouldn't immediatley access it
         // maybe make it some kind of await/async function
+
+
+        // Remove manager
     }
 }

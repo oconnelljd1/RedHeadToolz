@@ -17,12 +17,7 @@ namespace RedHeadToolz.Tools
         }
 
         void Update()
-        {
-            // move thesse two into managers
-            if (AudioController.Instance == null) return;
-
-            if(ScreenManager.Instance == null) return;
-            
+        {   
             if(_gm.IsInitialized == false) return;
 
             SceneManager.LoadScene(_sceneToLoad);

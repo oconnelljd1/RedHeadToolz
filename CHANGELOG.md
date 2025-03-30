@@ -16,7 +16,7 @@ General manager, for managing managers
 Time manager
 
 ### Changed
-AudioController is a singleton now
+AudioController is AudioManager now
 
 ## [0.1.3] 
 
