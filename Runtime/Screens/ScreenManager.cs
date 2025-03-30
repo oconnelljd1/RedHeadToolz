@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace RedHeadToolz.Screens
 {
-    public class ScreenManager : Singleton<ScreenManager>
+    public class ScreenManager : BaseManager
     {
         // move this onto a prefab with a cavas on the same object
         // may also need to spawn in my own eventsystem

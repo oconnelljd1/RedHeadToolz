@@ -43,14 +43,14 @@ namespace RedHeadToolz.Screens
         {
             Hide(() => {
                 if(callback != null) callback();
-                ScreenManager.Instance.CloseScreen(this);
+                GeneralManager.Instance.GetManager<ScreenManager>().CloseScreen(this);
             });
         }
 
         public virtual void Close()
         {
             Hide(()=>{
-                ScreenManager.Instance.CloseScreen(this);
+                GeneralManager.Instance.GetManager<ScreenManager>().CloseScreen(this);
             });
         }
     }
