@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RedHeadToolz;
+using RedHeadToolz.Debugging;
 using UnityEngine;
 
 namespace RedHeadToolz.Time
@@ -17,8 +18,15 @@ namespace RedHeadToolz.Time
         private List<Timer> _timers = new List<Timer>();
 
 
-        public Timer StartTimer(string id, float duration, Action callback = null)
+        public Timer AddTimer(string id, float duration, Action callback = null)
         {
+            var oldTimer = _timers.Find(x=>x.Id == id);
+            if(oldTimer)
+            {
+                Debug.LogWarning($"Timer {id} already exists.");
+                return oldTimer;
+            }
+
             Timer timer = CreateTimer();
             timer.Init(id, duration, callback);
             return timer;
@@ -28,6 +36,16 @@ namespace RedHeadToolz.Time
         {
             Timer timer = Instantiate(_timerPrefab, transform).GetComponent<Timer>();
             _timers.Add(timer);
+            return timer;
+        }
+
+        public Timer GetTimer(string id)
+        {
+            var timer = _timers.Find(x=>x.Id == id);
+            if(timer == null)
+            {
+                RHTebug.LogError($"No timer {id} found");
+            }
             return timer;
         }
 
