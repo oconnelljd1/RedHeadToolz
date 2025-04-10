@@ -8,6 +8,7 @@ namespace RedHeadToolz.Screens
     // a class built to handle showing and hiding through a generic scale animation
     public class FadeScreen : BaseScreen
     {
+        [Header("FadeScreen")]
         [SerializeField] private CanvasGroup _group;
 
         public override void Show(Action callback = null)

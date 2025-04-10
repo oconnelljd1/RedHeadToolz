@@ -9,6 +9,7 @@ namespace RedHeadToolz.Screens
     // A class that must be extended from if you expect to use it with the ScreenManager
     public abstract class BaseScreen : MonoBehaviour
     {
+        [Header("Base Screen")]
         [SerializeField] protected GameObject _inputLock;
         [SerializeField] private bool _hideStack = false;
         public bool HideStack {

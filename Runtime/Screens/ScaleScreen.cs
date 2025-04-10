@@ -9,6 +9,7 @@ namespace RedHeadToolz.Screens
     // a class built to handle showing and hiding through a generic scale animation
     public abstract class ScaleScreen : BaseScreen
     {
+        [Header("ScaleScreen")]
         [SerializeField] protected Transform _root;
 
         public override void Show(Action callback = null)
