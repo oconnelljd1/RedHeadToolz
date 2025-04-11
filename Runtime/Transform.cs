@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 namespace RedHeadToolz.Utils
@@ -25,6 +26,14 @@ namespace RedHeadToolz.Utils
             }
             return children;
             // return transform.Cast<Transform>().ToList();
+        }
+
+        public static void SetAsSecondLastChild(this Transform transform)
+        {
+            if (transform.parent != null)
+            {
+                transform.SetSiblingIndex(Mathf.Max(0, transform.parent.childCount - 2));
+            }
         }
     }
 }
