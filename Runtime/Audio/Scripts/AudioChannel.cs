@@ -87,8 +87,8 @@ namespace RedHeadToolz.Audio
 
         public void Loop(string clip)
         {
-            RHTebug.Log($"GM: {GeneralManager.Instance}");
-            RHTebug.Log($"Audio: {GeneralManager.Instance.GetManager<AudioManager>()}");
+            // RHTebug.Log($"GM: {GeneralManager.Instance}");
+            // RHTebug.Log($"Audio: {GeneralManager.Instance.GetManager<AudioManager>()}");
             Loop(GeneralManager.Instance.GetManager<AudioManager>().GetClip(clip));
         }
 

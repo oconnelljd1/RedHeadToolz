@@ -14,7 +14,7 @@ namespace RedHeadToolz.Audio
 
         public override void Init()
         {
-            RHTebug.Log("AUdio Init");
+            // RHTebug.Log("Audio Init");
             foreach(var id in _channelIds)
             {
                 AddChannel(id);
