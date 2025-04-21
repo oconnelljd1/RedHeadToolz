@@ -1,5 +1,6 @@
 using System;
 using DG.Tweening;
+using RedHeadToolz.Debugging;
 using RedHeadToolz.Screens;
 using UnityEngine;
 
@@ -10,13 +11,21 @@ public class TranslateScreen : BaseScreen
     [SerializeField] private Vector2 _inStart;
     [SerializeField] private Vector2 _outEnd;
 
+    private Vector2 rootOrigin;
+
+    void Awake()
+    {
+        rootOrigin = _root.anchoredPosition;
+        RHTebug.Log($"{rootOrigin}");
+    }
+
     public override void Show(Action callback = null)
     {
         _lockInput = true;
         _showing = true;
 
         _root.anchoredPosition = _inStart;
-        _root.DOAnchorPos(Vector2.zero, 0.5f)
+        _root.DOAnchorPos(rootOrigin, 0.5f)
             .OnComplete(() => {
                 callback?.Invoke();
                 _lockInput = false;

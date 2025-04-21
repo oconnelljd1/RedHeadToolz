@@ -10,5 +10,10 @@ namespace RedHeadToolz.Utils
         {
             return dateTime.Subtract(DateTime.MinValue).TotalSeconds;
         }
+
+        public static string FormatMDY(this DateTime dateTime)
+        {
+            return $"{dateTime.Month}-{dateTime.Day}-{dateTime.Year}";
+        }
     }
 }

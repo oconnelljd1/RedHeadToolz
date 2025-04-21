@@ -5,7 +5,7 @@ public class DebugObject : MonoBehaviour
     public void Awake()
     {
 #if RELEASE
-        SetActive(false);
+        gameObject.SetActive(false);
 #endif
     }
 }
