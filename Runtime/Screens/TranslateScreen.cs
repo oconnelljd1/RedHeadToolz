@@ -16,7 +16,7 @@ public class TranslateScreen : BaseScreen
     void Awake()
     {
         rootOrigin = _root.anchoredPosition;
-        RHTebug.Log($"{rootOrigin}");
+        // RHTebug.Log($"{rootOrigin}");
     }
 
     public override void Show(Action callback = null)
