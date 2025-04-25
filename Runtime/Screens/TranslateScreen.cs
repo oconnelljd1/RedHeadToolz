@@ -27,7 +27,7 @@ namespace RedHeadToolz.Screens
             _lockInput = true;
             _showing = true;
 
-            RHTebug.Log($"width: {_root.rect.width}, height: {_root.rect.width}");
+            // RHTebug.Log($"width: {_root.rect.width}, height: {_root.rect.width}");
 
             _root.anchoredPosition = new Vector2(_inStart.x * _root.rect.width, _inStart.y * _root.rect.height);
             _root.DOAnchorPos(rootOrigin, 0.5f)
@@ -60,7 +60,7 @@ namespace RedHeadToolz.Screens
 
         void Update()
         {
-            RHTebug.Log($"{_root.anchoredPosition}");
+            // RHTebug.Log($"{_root.anchoredPosition}");
         }
     }
 }
