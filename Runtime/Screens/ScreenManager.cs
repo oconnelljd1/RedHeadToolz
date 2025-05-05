@@ -4,6 +4,10 @@ using RedHeadToolz.Debugging;
 using RedHeadToolz.Utils;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace RedHeadToolz.Screens
 {
     public class ScreenManager : BaseManager
@@ -117,5 +121,26 @@ namespace RedHeadToolz.Screens
 
             return screen != null && screen.Showing;
         }
+
+#if UNITY_EDITOR
+        [MenuItem("CONTEXT/ScreenManager/Collect Screens")]
+        private static void CollectScreen(MenuCommand menuCommand)
+        {
+            ScreenManager screenManager = (ScreenManager)menuCommand.context;
+
+            List<BaseScreen> newScreens = new List<BaseScreen>();
+            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Prefabs/Screens" });
+            foreach (var guid in guids)
+            {
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
+                BaseScreen screen = prefab.GetComponent<BaseScreen>();
+                if(screen != null)
+                    newScreens.Add(screen);
+            }
+
+            screenManager.ScreenList = newScreens;
+            EditorUtility.SetDirty(screenManager);
+        }
+#endif
     }
 }

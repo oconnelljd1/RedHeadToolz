@@ -32,6 +32,7 @@ namespace RedHeadToolz.Screens
             _lockInput = true;
             _showing = false;
             _root.SetActive(false);
+            if(callback != null) callback();
         }
     }
 }
