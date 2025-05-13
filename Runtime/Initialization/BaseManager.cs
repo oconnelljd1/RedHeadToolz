@@ -13,7 +13,7 @@ namespace RedHeadToolz
             _initializationStatus = ManagerInitializationStatus.Success;
         }
 
-        public virtual void Update()
+        protected virtual void Update()
         {
             
         }
