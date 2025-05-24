@@ -94,19 +94,28 @@ namespace RedHeadToolz.Screens
             Destroy(screen.gameObject);
         }
 
+        public void CloseAll()
+        {
+            if (_screenStack.Count == 0) return;
+            foreach (var screen in _screenStack)
+            {
+                screen.Close();
+            }
+        }
+
         private void UpdateStackDisplay()
         {
             bool hideStack = false;
-            for(int i = 0; i < _screenStack.Count; i++)
+            for (int i = 0; i < _screenStack.Count; i++)
             {
                 var screen = _screenStack[i];
-                if(hideStack)
+                if (hideStack)
                 {
-                    if(screen.Showing == true) screen.Hide();
+                    if (screen.Showing == true) screen.Hide();
                 }
                 else
                 {
-                    if(screen.Showing == false) screen.Show();
+                    if (screen.Showing == false) screen.Show();
 
                     hideStack = screen.HideStack;
                 }
