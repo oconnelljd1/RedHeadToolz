@@ -1,6 +1,5 @@
 using System;
 using DG.Tweening;
-using RedHeadToolz.Debugging;
 using UnityEngine;
 
 namespace RedHeadToolz.Screens
