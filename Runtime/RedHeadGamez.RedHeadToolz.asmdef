@@ -3,7 +3,8 @@
     "rootNamespace": "RedHeadToolz",
     "references": [
         "Unity.TextMeshPro",
-        "DOTween.Modules"
+        "DOTween.Modules",
+        "Unity.Localization",
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
