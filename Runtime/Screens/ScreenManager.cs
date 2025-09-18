@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using RedHeadToolz.Debugging;
-using RedHeadToolz.Utils;
 using UnityEngine;
 
 #if UNITY_EDITOR
@@ -12,8 +11,6 @@ namespace RedHeadToolz.Screens
 {
     public class ScreenManager : BaseManager
     {
-        // move this onto a prefab with a cavas on the same object
-        // may also need to spawn in my own eventsystem
         [SerializeField] private List<BaseScreen> ScreenList;
         private List<BaseScreen> _screenStack = new List<BaseScreen>();
 

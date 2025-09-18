@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
+using RedHeadToolz.Debugging;
 
 namespace RedHeadToolz.Utils
 {
@@ -32,10 +33,12 @@ namespace RedHeadToolz.Utils
             }
             catch (RegexMatchTimeoutException e)
             {
+                RHTebug.LogError("RegexMatchTimeoutException in EmailValidator: " + e.Message);
                 return false;
             }
             catch (ArgumentException e)
             {
+                RHTebug.LogError("ArgumentException in EmailValidator: " + e.Message);
                 return false;
             }
 

@@ -67,6 +67,27 @@ public static class BuildApp
         }
     }
 
+    [MenuItem("RedHeadToolz/Build/Increment Patch and Build")]
+    public static void IncrementPatchAndBuild()
+    {
+        IncrementVersion.IncrementPatch();
+        BuildApplication();
+    }
+    
+    [MenuItem("RedHeadToolz/Build/Increment Minor and Build")]
+    public static void IncrementMinorAndBuild()
+    {
+        IncrementVersion.IncrementMinor();
+        BuildApplication();
+    }
+    
+    [MenuItem("RedHeadToolz/Build/Increment Major and Build")]
+    public static void IncrementMajorAndBuild()
+    {
+        IncrementVersion.IncrementMajor();
+        BuildApplication();
+    }
+
     private static string[] GetScenes()
     {
         return EditorBuildSettings.scenes
