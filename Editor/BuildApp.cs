@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor.Build.Reporting;
 using System.Linq;
 using RedHeadToolz.Debugging;
+using System.Diagnostics;
 
 public static class BuildApp
 {
@@ -59,6 +60,10 @@ public static class BuildApp
 
         if (report.summary.result == BuildResult.Succeeded)
         {
+            if(System.IO.Directory.Exists(versionFolder))
+            {
+                Process.Start("explorer.exe", versionFolder);
+            }
             RHTebug.LogSuccess("Build succeeded: " + report.summary.totalSize + " bytes");
         }
         else if (report.summary.result == BuildResult.Failed)
