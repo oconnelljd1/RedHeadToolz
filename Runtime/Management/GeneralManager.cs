@@ -20,7 +20,8 @@ namespace RedHeadToolz
         public ManagerInitializationStatus InitializationStatus => _initializationStatus;
         public bool IsInitialized => _initializationStatus == ManagerInitializationStatus.Success;
 
-        [SerializeField] private List<BaseManager> _defaultManagers = new List<BaseManager>();
+        [SerializeField] private List<BaseManager> _allManagers = new List<BaseManager>();
+        [SerializeField] private List<BaseManager> _initManagers = new List<BaseManager>();
 
         private List<BaseManager> _managers = new List<BaseManager>();
 
@@ -34,22 +35,22 @@ namespace RedHeadToolz
         {
             _initializationStatus = ManagerInitializationStatus.Initializing;
 
-            foreach (BaseManager manager in _defaultManagers)
+            foreach (BaseManager manager in _initManagers)
             {
                 // not sure if screen manager will work for this where it has a rect transform and needs a canvas
                 BaseManager newManager = Instantiate(manager, transform).GetComponent<BaseManager>();
                 _managers.Add(newManager);
-                if(newManager.InitializationStatus == ManagerInitializationStatus.Uninitialized)
+                if (newManager.InitializationStatus == ManagerInitializationStatus.Uninitialized)
                 {
                     newManager.Init();
                 }
 
-                while(newManager.IsInitialized == false)
+                while (newManager.IsInitialized == false)
                 {
                     yield return null;
                 }
             }
-            
+
             _initializationStatus = ManagerInitializationStatus.Success;
         }
 
@@ -57,7 +58,7 @@ namespace RedHeadToolz
         {
             foreach (BaseManager manager in _managers)
             {
-                if(manager is T)
+                if (manager is T)
                 {
                     return manager as T;
                 }
@@ -67,12 +68,45 @@ namespace RedHeadToolz
             return null;
         }
 
+        // public T AddManager<T>() where T : BaseManager
+        // {
+        //     if (GetManager<T>() != null)
+        //     {
+        //         RHTebug.LogWarning($"Manager of type {typeof(T)} already exists.");
+        //         return GetManager<T>();
+        //     }
+        //     foreach (BaseManager manager in _allManagers)
+        //     {
+        //         // not sure if screen manager will work for this where it has a rect transform and needs a canvas
+        //         BaseManager newManager = Instantiate(manager, transform).GetComponent<BaseManager>();
+        //         _managers.Add(newManager);
+        //         if (newManager.InitializationStatus == ManagerInitializationStatus.Uninitialized)
+        //         {
+        //             newManager.Init();
+        //         }
+        //         return newManager as T;
+        //     }
+        //     return null;
+        // }
+
+        // public T RemoveManager<T>() where T : BaseManager
+        // {
+        //     T managerToRemove = GetManager<T>();
+        //     if (managerToRemove == null)
+        //     {
+        //         RHTebug.LogWarning($"Manager of type {typeof(T)} does not exist.");
+        //         return null;
+        //     }
+
+        //     managerToRemove.Dispose();
+        //     _managers.Remove(managerToRemove);
+        //     Destroy(managerToRemove.gameObject);
+        //     return managerToRemove;
+        // }
+
         // does it make sense to have an add manager funciton
         // because if a module needs time to initialize...
         // whatever adds it shouldn't immediatley access it
         // maybe make it some kind of await/async function
-
-
-        // Remove manager
     }
 }

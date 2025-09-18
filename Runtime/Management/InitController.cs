@@ -7,20 +7,21 @@ namespace RedHeadToolz.Tools
 {
     public class InitController : MonoBehaviour
     {
-        [SerializeField] GeneralManager _gm;
-        [SerializeField] private string _sceneToLoad = "MainMenu";
-        void Start()
+        [SerializeField] protected GeneralManager _gm;
+        // [SerializeField] protected Scene _sceneToLoad;
+        [SerializeField] protected string _sceneToLoad;
+        protected virtual void Start()
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
             Screen.orientation = ScreenOrientation.LandscapeLeft;
             // Screen.SetResolution(1920, 1080, false);
         }
 
-        void Update()
+        protected virtual void Update()
         {   
             if(_gm.IsInitialized == false) return;
 
-            SceneManager.LoadScene(_sceneToLoad);
+            GeneralManager.Instance.GetManager<SceneManager>().AddScene(_sceneToLoad);
         }
     }
 }

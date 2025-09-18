@@ -5,6 +5,9 @@
         "Unity.TextMeshPro",
         "DOTween.Modules",
         "Unity.Localization",
+        "Unity.Addressables",
+        "Unity.ResourceManager",
+        "Unity.Addressables.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace RedHeadToolz
@@ -8,14 +9,26 @@ namespace RedHeadToolz
         public ManagerInitializationStatus InitializationStatus => _initializationStatus;
         public bool IsInitialized => _initializationStatus == ManagerInitializationStatus.Success;
 
+        public Action OnInitialized;
+        public Action OnDisposed;
+
         public virtual void Init()
         {
             _initializationStatus = ManagerInitializationStatus.Success;
+            OnInitialized?.Invoke();
         }
 
         protected virtual void Update()
         {
             
+        }
+
+        public virtual void Dispose()
+        {
+            _initializationStatus = ManagerInitializationStatus.Uninitialized;
+            OnDisposed?.Invoke();
+            OnInitialized = null;
+            OnDisposed = null;
         }
     }
 }

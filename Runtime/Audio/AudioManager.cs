@@ -1,7 +1,12 @@
 using System.Collections.Generic;
+using RedHeadToolz.Addressables;
 using RedHeadToolz.Debugging;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace RedHeadToolz.Audio
 {
@@ -9,23 +14,55 @@ namespace RedHeadToolz.Audio
     {
         [SerializeField] private GameObject _channelPrefab;
         [SerializeField] private List<string> _channelIds = new List<string>();
-        [SerializeField] private List<AudioClip> _clips;
+        // [SerializeField] private List<AudioClip> _clips;
+        [SerializeField] private List<AssetReferenceAudioClip> _clips;
         private List<AudioChannel> _channels = new List<AudioChannel>();
+        private int _loadIndex;
 
         public override void Init()
         {
+            _initializationStatus = ManagerInitializationStatus.Initializing;
             // RHTebug.Log("Audio Init");
-            foreach(var id in _channelIds)
+            foreach (var id in _channelIds)
             {
                 AddChannel(id);
             }
-            base.Init();
+            LoadNextAsset();
+            // base.Init();
+        }
+
+        private void LoadNextAsset()
+        {
+            if (_loadIndex >= _clips.Count)
+            {
+                RHTebug.Log("Finished loading Clips");
+                if (_initializationStatus == ManagerInitializationStatus.Initializing)
+                {
+                    _initializationStatus = ManagerInitializationStatus.Success;
+                }
+                return;
+            }
+            _clips[_loadIndex].LoadAssetAsync().Completed += OnAssetLoaded;
+        }
+
+        void OnAssetLoaded(AsyncOperationHandle<AudioClip> handle)
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                RHTebug.LogSuccess($"Asset {handle.Result.name} loaded successfully!");
+            }
+            else
+            {
+                RHTebug.LogError($"Asset {_clips[_loadIndex]} loaded unseccessfully");
+            }
+            _loadIndex++;
+            LoadNextAsset();
         }
 
         public void AddChannel(string id, int sources = 1)
         {
             AudioChannel channel = _channels.Find(x => x.Id == id);
-            if(channel != null)
+            if (channel != null)
             {
                 Debug.LogError($"Channel with Id {id} already exists, aborting.");
                 return;
@@ -44,10 +81,10 @@ namespace RedHeadToolz.Audio
 
         public AudioClip GetClip(string clip)
         {
-            var newClip = _clips.Find(x=>x.name == clip);
+            var newClip = _clips.Find(x=>x.Asset.name == clip);
             if(newClip == null)
                 RHTebug.LogError($"Clip {clip} not found!");
-            return newClip;
+            return (AudioClip)newClip.Asset;
         }
 
         // Depricate, find channels and play there
@@ -80,10 +117,10 @@ namespace RedHeadToolz.Audio
                 chan.Unmute();
         }
 
-        public void SetClips(List<AudioClip> newClips)
-        {
-            _clips = newClips;
-        }
+        // public void SetClips(List<AudioClip> newClips)
+        // {
+        //     _clips = newClips;
+        // }
 
 #if UNITY_EDITOR
         [MenuItem("CONTEXT/AudioManager/Collect Clips")]
@@ -91,12 +128,15 @@ namespace RedHeadToolz.Audio
         {
             AudioManager audioManager = (AudioManager)menuCommand.context;
 
-            List<AudioClip> newClips = new List<AudioClip>();
+            List<AssetReferenceAudioClip> newClips = new List<AssetReferenceAudioClip>();
             string[] guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Audio" });
             foreach (var guid in guids)
             {
-                AudioClip clip = (AudioClip)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(AudioClip));
-                newClips.Add(clip);
+                // AssetReferenceAudioClip clip = (AssetReferenceAudioClip)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(AssetReferenceAudioClip));
+                // newClips.Add(clip);
+                AddressableFactory.MakeAddressable(AssetDatabase.GUIDToAssetPath(guid));
+                var assetRef = new AssetReferenceAudioClip(guid);
+                newClips.Add(assetRef);
             }
 
             audioManager._clips = newClips;
