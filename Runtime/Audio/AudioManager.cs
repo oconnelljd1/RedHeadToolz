@@ -42,7 +42,7 @@ namespace RedHeadToolz.Audio
                 }
                 return;
             }
-            _clips[_loadIndex].LoadAssetAsync().Completed += OnAssetLoaded;
+            _clips[_loadIndex].LoadAssetAsync<AudioClip>().Completed += OnAssetLoaded;
         }
 
         void OnAssetLoaded(AsyncOperationHandle<AudioClip> handle)
@@ -87,6 +87,14 @@ namespace RedHeadToolz.Audio
             return (AudioClip)newClip.Asset;
         }
 
+        public AudioClip GetClipByGUID(string GUID)
+        {
+            var newClip = _clips.Find(x=>x.AssetGUID == GUID);
+            if(newClip == null)
+                RHTebug.LogError($"Clip {GUID} not found!");
+            return (AudioClip)newClip.Asset;
+        }
+
         // Depricate, find channels and play there
         public void PlaySoundOnChannel(string clip, string channel)
         {
@@ -105,13 +113,21 @@ namespace RedHeadToolz.Audio
             chan.Stop();
         }
 
+        public void StopAllChannels()
+        {
+            foreach (var channel in _channels)
+            {
+                channel.Stop();
+            }
+        }
+
         // depricate, find channel and mute there
         public void SetChannelMuted(string channel, bool mute)
         {
-            var chan = _channels.Find(x=> x.Id == channel);
-            if(chan == null) return;
-            
-            if(mute)
+            var chan = _channels.Find(x => x.Id == channel);
+            if (chan == null) return;
+
+            if (mute)
                 chan.Mute();
             else
                 chan.Unmute();
@@ -129,7 +145,8 @@ namespace RedHeadToolz.Audio
             AudioManager audioManager = (AudioManager)menuCommand.context;
 
             List<AssetReferenceAudioClip> newClips = new List<AssetReferenceAudioClip>();
-            string[] guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Audio" });
+            // string[] guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Audio" });
+            string[] guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets" });
             foreach (var guid in guids)
             {
                 // AssetReferenceAudioClip clip = (AssetReferenceAudioClip)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(AssetReferenceAudioClip));

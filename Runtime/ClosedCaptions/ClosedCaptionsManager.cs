@@ -14,6 +14,7 @@ public class ClosedCaptionsManager : BaseManager
     [SerializeField] private GameObject _root;
     [SerializeField] private TMPro.TextMeshProUGUI _text;
     [SerializeField] private List<ClosedCaptionsData> _captions;
+    [SerializeField] private string _defaultTable = "DefaultTable";
     private ClosedCaptionsData _data;
     private int _index;
     private float _time;
@@ -53,9 +54,15 @@ public class ClosedCaptionsManager : BaseManager
         _data = data;
         _index = 0;
         _time = 0;
-        _text.text = LocalizationSettings.StringDatabase.GetLocalizedString("Aura3025Table", _data.captions[_index].TextKey);
+        _text.text = LocalizationSettings.StringDatabase.GetLocalizedString(GetTable(_data.captions[_index]), _data.captions[_index].TextKey);
         _root.SetActive(true);
         _callback = callback;
+    }
+
+    private string GetTable(ClosedCaption data)
+    {
+        if (string.IsNullOrEmpty(data.Table)) return _defaultTable;
+        return data.Table;
     }
 
     protected override void Update()
@@ -68,7 +75,7 @@ public class ClosedCaptionsManager : BaseManager
             _index++;
             if (_index < _data.captions.Count)
             {
-                _text.text = LocalizationSettings.StringDatabase.GetLocalizedString("Aura3025Table", _data.captions[_index].TextKey);
+                _text.text = LocalizationSettings.StringDatabase.GetLocalizedString(GetTable(_data.captions[_index]), _data.captions[_index].TextKey);
             }
             else
             {
@@ -92,7 +99,8 @@ public class ClosedCaptionsManager : BaseManager
         ClosedCaptionsManager controller = (ClosedCaptionsManager)menuCommand.context;
 
         List<ClosedCaptionsData> newCaptions = new List<ClosedCaptionsData>();
-        string[] guids = AssetDatabase.FindAssets("t:ClosedCaptionsData", new[] { "Assets/ScriptableObjects/ClosedCaptions" });
+        // string[] guids = AssetDatabase.FindAssets("t:ClosedCaptionsData", new[] { "Assets/ScriptableObjects/ClosedCaptions" });
+        string[] guids = AssetDatabase.FindAssets("t:ClosedCaptionsData", new[] { "Assets" });
         foreach (var guid in guids)
         {
             ClosedCaptionsData clip = (ClosedCaptionsData)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(ClosedCaptionsData));

@@ -93,7 +93,7 @@ namespace RedHeadToolz.Time
 
         public void Pause()
         {
-            RHTebug.Log($"{_id} Pause");
+            // RHTebug.Log($"{_id} Pause");
             _paused = true;
         }
 

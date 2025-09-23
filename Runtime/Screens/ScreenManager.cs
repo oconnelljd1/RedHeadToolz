@@ -91,19 +91,35 @@ namespace RedHeadToolz.Screens
             Destroy(screen.gameObject);
         }
 
+        public void CloseAllScreens()
+        {
+            for (int i = _screenStack.Count - 1; i > -1; i--)
+            {
+                _screenStack[i].Close();
+            }
+        }
+
+        public void CloseAllScreensImmediate()
+        {
+            for (int i = _screenStack.Count - 1; i > -1; i--)
+            {
+                _screenStack[i].CloseImmediate();
+            }
+        }
+
         private void UpdateStackDisplay()
         {
             bool hideStack = false;
-            for(int i = 0; i < _screenStack.Count; i++)
+            for (int i = 0; i < _screenStack.Count; i++)
             {
                 var screen = _screenStack[i];
-                if(hideStack)
+                if (hideStack)
                 {
-                    if(screen.Showing == true) screen.Hide();
+                    if (screen.Showing == true) screen.Hide();
                 }
                 else
                 {
-                    if(screen.Showing == false) screen.Show();
+                    if (screen.Showing == false) screen.Show();
 
                     hideStack = screen.HideStack;
                 }
@@ -126,7 +142,8 @@ namespace RedHeadToolz.Screens
             ScreenManager screenManager = (ScreenManager)menuCommand.context;
 
             List<BaseScreen> newScreens = new List<BaseScreen>();
-            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Prefabs/Screens" });
+            // string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Prefabs/Screens" });
+            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets" });
             foreach (var guid in guids)
             {
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));

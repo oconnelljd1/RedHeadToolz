@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using RedHeadToolz.Debugging;
 
 namespace RedHeadToolz.Screens
 {
@@ -36,6 +37,7 @@ namespace RedHeadToolz.Screens
                 return _inputLock.activeSelf;
             }
             set{
+                RHTebug.Log($"Setting input lock to {value}");
                 _inputLock.SetActive(value);
             }
         }
@@ -67,6 +69,7 @@ namespace RedHeadToolz.Screens
                     elapsed += UnityEngine.Time.deltaTime;
                 }
             }
+            // RHTebug.Log("Finished Showing");
             _lockInput = false;
             if (callback != null) callback();
         }
@@ -77,6 +80,7 @@ namespace RedHeadToolz.Screens
             {
                 transition.Complete(_root);
             }
+            _lockInput = false;
             _showing = true;
         }
 
@@ -106,6 +110,7 @@ namespace RedHeadToolz.Screens
                     elapsed += UnityEngine.Time.deltaTime;
                 }
             }
+            // RHTebug.Log("Finished Hiding");
             _showing = false;
             _lockInput = false;
             if (callback != null) callback();
@@ -120,9 +125,11 @@ namespace RedHeadToolz.Screens
             });
         }
 
+        // exists for assigning in the inspector
         public virtual void Close()
         {
-            Hide(()=>{
+            Hide(() =>
+            {
                 GeneralManager.Instance.GetManager<ScreenManager>().CloseScreen(this);
             });
         }

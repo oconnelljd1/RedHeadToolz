@@ -34,7 +34,7 @@ namespace RedHeadToolz
                 }
                 return;
             }
-            _sprites[_loadIndex].LoadAssetAsync().Completed += OnAssetLoaded;
+            _sprites[_loadIndex].LoadAssetAsync<Sprite>().Completed += OnAssetLoaded;
         }
 
         void OnAssetLoaded(AsyncOperationHandle<Sprite> handle)
@@ -59,6 +59,14 @@ namespace RedHeadToolz
             return (Sprite)newSprite.Asset;
         }
 
+        public Sprite GetSpriteByGUID(string GUID)
+        {
+            var newSprite = _sprites.Find(x=>x.AssetGUID == GUID);
+            if(newSprite == null)
+                RHTebug.LogError($"Sprite {GUID} not found!");
+            return (Sprite)newSprite.Asset;
+        }
+
 #if UNITY_EDITOR
         [MenuItem("CONTEXT/SpriteManager/Collect Sprites")]
         private static void CollectSprites(MenuCommand menuCommand)
@@ -66,7 +74,8 @@ namespace RedHeadToolz
             SpriteManager spriteManager = (SpriteManager)menuCommand.context;
 
             List<AssetReferenceSprite> newSprites = new List<AssetReferenceSprite>();
-            string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets/Sprites" });
+            // string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets/Sprites" });
+            string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets" });
             foreach (var guid in guids)
             {
                 // AssetReferenceSprite sprite = (AssetReferenceSprite)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(AssetReferenceSprite));

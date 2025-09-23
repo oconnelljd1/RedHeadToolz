@@ -34,7 +34,7 @@ namespace RedHeadToolz
                 }
                 return;
             }
-            _videos[_loadIndex].LoadAssetAsync().Completed += OnAssetLoaded;
+            _videos[_loadIndex].LoadAssetAsync<VideoClip>().Completed += OnAssetLoaded;
         }
 
         void OnAssetLoaded(AsyncOperationHandle<VideoClip> handle)
@@ -59,6 +59,14 @@ namespace RedHeadToolz
             return (VideoClip)newVideo.Asset;
         }
 
+        public VideoClip GetVideoByGUID(string GUID)
+        {
+            var newSprite = _videos.Find(x=>x.AssetGUID == GUID);
+            if(newSprite == null)
+                RHTebug.LogError($"Video {GUID} not found!");
+            return (VideoClip)newSprite.Asset;
+        }
+
 #if UNITY_EDITOR
         [MenuItem("CONTEXT/VideoManager/Collect Videos")]
         private static void CollectVideos(MenuCommand menuCommand)
@@ -66,7 +74,8 @@ namespace RedHeadToolz
             VideoManager videoManager = (VideoManager)menuCommand.context;
 
             List<AssetReferenceVideoClip> newVideos = new List<AssetReferenceVideoClip>();
-            string[] guids = AssetDatabase.FindAssets("t:VideoClip", new[] { "Assets/Videos" });
+            // string[] guids = AssetDatabase.FindAssets("t:VideoClip", new[] { "Assets/Videos" });
+            string[] guids = AssetDatabase.FindAssets("t:VideoClip", new[] { "Assets" });
             foreach (var guid in guids)
             {
                 // AssetReferenceVideo video = (AssetReferenceVideo)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(AssetReferenceVideo));
