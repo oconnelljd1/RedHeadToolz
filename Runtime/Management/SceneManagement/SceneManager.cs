@@ -19,6 +19,7 @@ namespace RedHeadToolz
 
         public override void Init()
         {
+            _initializationStatus = ManagerInitializationStatus.Initializing;
             // foreach (Scene scene in initialScenes)
             foreach (string scene in initialScenes)
             {

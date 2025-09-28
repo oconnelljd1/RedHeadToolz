@@ -1,13 +1,13 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using RedHeadToolz.Audio;
-using RedHeadToolz.Screens;
+using System.Collections.Generic;
 
 namespace RedHeadToolz.Tools
 {
     public class InitController : MonoBehaviour
     {
         [SerializeField] protected GeneralManager _gm;
+        [SerializeField] private List<BaseManager> _preloadManagers = new List<BaseManager>();
+
         // [SerializeField] protected Scene _sceneToLoad;
         [SerializeField] protected string _sceneToLoad;
         protected virtual void Start()

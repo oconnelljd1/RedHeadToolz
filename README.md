@@ -4,3 +4,9 @@ Make sure you have Unity's Localization Package installed.
 Make sure you have Unity's Addressables installed (included with localization)
 
 Prefabs in Samples are meant to be copied into your own project (especially if you're using RedHeadToolz as a sub-repo)
+
+SETUP
+Meant to be used with an Initialization Scene.
+Check samples for basic structure.
+Use the RedHeadToolz -> Scene AutoLoad  to choose which scene should load when you press the play button.
+

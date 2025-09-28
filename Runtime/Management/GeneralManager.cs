@@ -4,6 +4,10 @@ using RedHeadToolz.Debugging;
 using RedHeadToolz.Utils;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace RedHeadToolz
 {
     public enum ManagerInitializationStatus
@@ -16,14 +20,13 @@ namespace RedHeadToolz
 
     public class GeneralManager : Singleton<GeneralManager>
     {
-        private ManagerInitializationStatus _initializationStatus;
+        private ManagerInitializationStatus _initializationStatus = ManagerInitializationStatus.Uninitialized;
         public ManagerInitializationStatus InitializationStatus => _initializationStatus;
         public bool IsInitialized => _initializationStatus == ManagerInitializationStatus.Success;
 
-        [SerializeField] private List<BaseManager> _allManagers = new List<BaseManager>();
-        [SerializeField] private List<BaseManager> _initManagers = new List<BaseManager>();
-
-        private List<BaseManager> _managers = new List<BaseManager>();
+        [SerializeField] private List<BaseManager> _managers = new List<BaseManager>();
+        
+        private List<BaseManager> _activeManagers = new List<BaseManager>();
 
         protected override void Awake()
         {
@@ -35,11 +38,10 @@ namespace RedHeadToolz
         {
             _initializationStatus = ManagerInitializationStatus.Initializing;
 
-            foreach (BaseManager manager in _initManagers)
+            foreach (BaseManager manager in _managers)
             {
-                // not sure if screen manager will work for this where it has a rect transform and needs a canvas
                 BaseManager newManager = Instantiate(manager, transform).GetComponent<BaseManager>();
-                _managers.Add(newManager);
+                _activeManagers.Add(newManager);
                 if (newManager.InitializationStatus == ManagerInitializationStatus.Uninitialized)
                 {
                     newManager.Init();
@@ -108,5 +110,26 @@ namespace RedHeadToolz
         // because if a module needs time to initialize...
         // whatever adds it shouldn't immediatley access it
         // maybe make it some kind of await/async function
+#if UNITY_EDITOR
+        [MenuItem("CONTEXT/GeneralManager/Collect Manager")]
+        private static void CollectManagers(MenuCommand menuCommand)
+        {
+            GeneralManager generalManager = (GeneralManager)menuCommand.context;
+
+            List<BaseManager> newMangers = new List<BaseManager>();
+            // string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Prefabs/Screens" });
+            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets" });
+            foreach (var guid in guids)
+            {
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
+                BaseManager screen = prefab.GetComponent<BaseManager>();
+                if(screen != null)
+                    newMangers.Add(screen);
+            }
+
+            generalManager._managers = newMangers;
+            EditorUtility.SetDirty(generalManager);
+        }
+#endif
     }
 }

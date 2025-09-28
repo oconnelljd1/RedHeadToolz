@@ -52,12 +52,12 @@ namespace RedHeadToolz.Audio
 
         public void Play(string clip)
         {
-            Play(GeneralManager.Instance.GetManager<AudioManager>().GetClip(clip));
+            Play(GeneralManager.Instance.GetManager<AssetManager>().GetAudioClip(clip));
         }
 
         public void Play(string clip, Action callback)
         {
-            Play(GeneralManager.Instance.GetManager<AudioManager>().GetClip(clip), callback);
+            Play(GeneralManager.Instance.GetManager<AssetManager>().GetAudioClip(clip), callback);
         }
 
         public void Play(AudioClip clip)
@@ -89,7 +89,7 @@ namespace RedHeadToolz.Audio
         {
             // RHTebug.Log($"GM: {GeneralManager.Instance}");
             // RHTebug.Log($"Audio: {GeneralManager.Instance.GetManager<AudioManager>()}");
-            Loop(GeneralManager.Instance.GetManager<AudioManager>().GetClip(clip));
+            Loop(GeneralManager.Instance.GetManager<AssetManager>().GetAudioClip(clip));
         }
 
         public void Loop(AudioClip clip)

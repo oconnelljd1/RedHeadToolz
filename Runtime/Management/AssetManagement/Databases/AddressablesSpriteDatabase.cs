@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using RedHeadToolz.Debugging;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using RedHeadToolz.Debugging;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using RedHeadToolz.Addressables;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -11,16 +12,18 @@ using UnityEditor;
 
 namespace RedHeadToolz
 {
-    public class SpriteManager : BaseManager
+    [CreateAssetMenu(fileName = "AddressablesSpriteDatabase", menuName = "RedHeadToolz/Databases/AddressablesSpriteDatabase")]
+    public class AddressablesSpriteDatabase : BaseAssetDatabase
     {
         [SerializeField] private List<AssetReferenceSprite> _sprites;
         private int _loadIndex;
 
         public override void Init()
         {
-            
+            RHTebug.Log("Initializing Addresables Sprite Database");
             _initializationStatus = ManagerInitializationStatus.Initializing;
             LoadNextAsset();
+            // base.Init();
         }
 
         private void LoadNextAsset()
@@ -53,25 +56,25 @@ namespace RedHeadToolz
 
         public Sprite GetSprite(string sprite)
         {
-            var newSprite = _sprites.Find(x=>x.Asset.name == sprite);
-            if(newSprite == null)
+            var newSprite = _sprites.Find(x => x.Asset.name == sprite);
+            if (newSprite == null)
                 RHTebug.LogError($"Sprite {sprite} not found!");
             return (Sprite)newSprite.Asset;
         }
 
         public Sprite GetSpriteByGUID(string GUID)
         {
-            var newSprite = _sprites.Find(x=>x.AssetGUID == GUID);
-            if(newSprite == null)
+            var newSprite = _sprites.Find(x => x.AssetGUID == GUID);
+            if (newSprite == null)
                 RHTebug.LogError($"Sprite {GUID} not found!");
             return (Sprite)newSprite.Asset;
         }
 
 #if UNITY_EDITOR
-        [MenuItem("CONTEXT/SpriteManager/Collect Sprites")]
+        [MenuItem("CONTEXT/AddressablesSpriteDatabase/Collect Sprites")]
         private static void CollectSprites(MenuCommand menuCommand)
         {
-            SpriteManager spriteManager = (SpriteManager)menuCommand.context;
+            AddressablesSpriteDatabase spriteDatabase = (AddressablesSpriteDatabase)menuCommand.context;
 
             List<AssetReferenceSprite> newSprites = new List<AssetReferenceSprite>();
             // string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets/Sprites" });
@@ -85,8 +88,8 @@ namespace RedHeadToolz
                 newSprites.Add(assetRef);
             }
 
-            spriteManager._sprites = newSprites;
-            EditorUtility.SetDirty(spriteManager);
+            spriteDatabase._sprites = newSprites;
+            EditorUtility.SetDirty(spriteDatabase);
         }
 #endif
     }
