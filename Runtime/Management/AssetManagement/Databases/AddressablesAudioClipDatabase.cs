@@ -19,6 +19,7 @@ namespace RedHeadToolz
         public override void Init()
         {
             RHTebug.Log("Initializing Addresables Audio Clip Database");
+            _loadIndex = 0;
             _initializationStatus = ManagerInitializationStatus.Initializing;
             LoadNextAsset();
             // base.Init();
@@ -26,7 +27,7 @@ namespace RedHeadToolz
 
         private void LoadNextAsset()
         {
-            RHTebug.Log($"index: {_loadIndex}, count: {_clips.Count}");
+            // RHTebug.Log($"index: {_loadIndex}, count: {_clips.Count}");
             if (_loadIndex >= _clips.Count)
             {
                 RHTebug.Log("Finished loading Audio Clips");

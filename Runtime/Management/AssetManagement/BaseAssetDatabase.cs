@@ -17,7 +17,7 @@ namespace RedHeadToolz
 
         public virtual void Init()
         {
-            RHTebug.Log("Herr");
+            // RHTebug.Log("Herr");
             _initializationStatus = ManagerInitializationStatus.Success;
             OnInitialized?.Invoke();
         }

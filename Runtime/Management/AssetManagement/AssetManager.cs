@@ -26,14 +26,10 @@ namespace RedHeadToolz
         {
             foreach (BaseAssetDatabase database in _databases)
             {
-                RHTebug.Log($"DatabaseStatus: {database.InitializationStatus}");
+                // RHTebug.Log($"DatabaseStatus: {database.InitializationStatus}");
                 if (database == null) continue;
 
-                if (database.InitializationStatus == ManagerInitializationStatus.Uninitialized)
-                {
-                    RHTebug.Log("Here?");
-                    database.Init();
-                }
+                database.Init(); // forcing Init becuase scriptable object holds onto it's values between play sessions
 
                 while (database.IsInitialized == false)
                 {
@@ -41,7 +37,7 @@ namespace RedHeadToolz
                 }
             }
 
-            RHTebug.Log("AssetManager initialized!");
+            // RHTebug.Log("AssetManager initialized!");
             _initializationStatus = ManagerInitializationStatus.Success;
             OnInitialized?.Invoke();
         }

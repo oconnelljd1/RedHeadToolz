@@ -21,6 +21,7 @@ namespace RedHeadToolz
         public override void Init()
         {
             RHTebug.Log("Initializing Addresables Sprite Database");
+            _loadIndex = 0;
             _initializationStatus = ManagerInitializationStatus.Initializing;
             LoadNextAsset();
             // base.Init();

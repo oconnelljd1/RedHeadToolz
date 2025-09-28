@@ -34,18 +34,28 @@ namespace RedHeadToolz.Audio
 
             channel = Instantiate(_channelPrefab, gameObject.transform).GetComponent<AudioChannel>();
             channel.Init(id, sources);
+            channel.gameObject.name = $"AudioChannel_{id}";
 
             _channels.Add(channel);
+            RHTebug.Log($"Channels: {_channels.Count}");
         }
 
         public AudioChannel GetChannel(string channel)
         {
-            var chan = _channels.Find(x=>x.Id == channel);
-            if (chan == null)
+            RHTebug.Log($"Channels: {_channels.Count}");
+            foreach (var chan in _channels)
             {
-                RHTebug.LogError($"Channel {channel} not found");
+                RHTebug.Log($"Channel: {chan.Id}");
+                if (chan.Id == channel)
+                    return chan;
             }
-            return chan;
+            // var chan = _channels.Find(x=>x.Id == channel);
+            // if (chan == null)
+            // {
+            RHTebug.LogError($"Channel {channel} not found");
+            // }
+            // return chan;
+            return null;
         }
 
         // Depricate, find channels and play there

@@ -20,6 +20,7 @@ namespace RedHeadToolz
         public override void Init()
         {
             RHTebug.Log("Initializing Addresables Video Clip Database");
+            _loadIndex = 0;
             _initializationStatus = ManagerInitializationStatus.Initializing;
             LoadNextAsset();
             // base.Init();
