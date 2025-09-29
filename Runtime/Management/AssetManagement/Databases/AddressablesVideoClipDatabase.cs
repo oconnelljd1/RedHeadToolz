@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using RedHeadToolz.Debugging;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.Video;
+using System.Threading.Tasks;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -15,43 +17,39 @@ namespace RedHeadToolz
     public class AddressablesVideoClipDatabase : BaseAssetDatabase
     {
         [SerializeField] private List<AssetReferenceVideoClip> _clips;
-        private int _loadIndex;
 
-        public override void Init()
+        public override async Task<InitializationStatus> Init()
         {
             RHTebug.Log("Initializing Addresables Video Clip Database");
-            _loadIndex = 0;
-            _initializationStatus = ManagerInitializationStatus.Initializing;
-            LoadNextAsset();
-            // base.Init();
+            await LoadAssets();
+            return await base.Init();
         }
 
-        private void LoadNextAsset()
+        private async Task LoadAssets()
         {
-            if (_loadIndex >= _clips.Count)
+            List<Task> loadTasks = new List<Task>();
+            foreach (var clip in _clips)
             {
-                RHTebug.Log("Finished loading VideoClips");
-                if (_initializationStatus == ManagerInitializationStatus.Initializing)
-                {
-                    _initializationStatus = ManagerInitializationStatus.Success;
-                }
-                return;
+                loadTasks.Add(LoadAsset(clip));
             }
-            _clips[_loadIndex].LoadAssetAsync<VideoClip>().Completed += OnAssetLoaded;
+            await Task.WhenAll(loadTasks);
         }
 
-        void OnAssetLoaded(AsyncOperationHandle<VideoClip> handle)
+        private async Task LoadAsset(AssetReferenceVideoClip clip)
         {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+#if RELEASE
+            if (clip.IsDone) return;
+#endif
+
+            var result = await UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<VideoClip>(clip).Task;
+            if (result == null)
             {
-                RHTebug.LogSuccess($"Asset {handle.Result.name} loaded successfully!");
+                RHTebug.LogError($"Failed to load video clip with GUID {clip.AssetGUID}!");
             }
             else
             {
-                RHTebug.LogError($"Asset {_clips[_loadIndex]} loaded unseccessfully");
+                RHTebug.LogSuccess($"Videoclip {result.name} loaded successfully!");
             }
-            _loadIndex++;
-            LoadNextAsset();
         }
 
         public VideoClip GetVideoClip(string clip)

@@ -4,6 +4,8 @@ using RedHeadToolz.Debugging;
 using RedHeadToolz;
 using UnityEngine.Localization.Settings;
 using System;
+using System.Threading.Tasks;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,10 +22,10 @@ public class ClosedCaptionsManager : BaseManager
     private float _time;
     private Action _callback;
 
-    public override void Init()
+    public override async Task<InitializationStatus> Init()
     {
         Stop();
-        base.Init();
+        return await base.Init();
     }
 
     public ClosedCaptionsData GetCaption(string caption)
@@ -65,7 +67,7 @@ public class ClosedCaptionsManager : BaseManager
         return data.Table;
     }
 
-    protected override void Update()
+    protected void Update()
     {
         if (_data == null) return;
 

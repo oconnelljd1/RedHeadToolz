@@ -3,6 +3,8 @@ using RedHeadToolz.Addressables;
 using System.Collections.Generic;
 using RedHeadToolz.Debugging;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Threading.Tasks;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -14,45 +16,37 @@ namespace RedHeadToolz
     public class AddressablesAudioClipDatabase : BaseAssetDatabase
     {
         [SerializeField] private List<AssetReferenceAudioClip> _clips;
-        private int _loadIndex = 0;
 
-        public override void Init()
+        public override async Task<InitializationStatus> Init()
         {
-            RHTebug.Log("Initializing Addresables Audio Clip Database");
-            _loadIndex = 0;
-            _initializationStatus = ManagerInitializationStatus.Initializing;
-            LoadNextAsset();
-            // base.Init();
+            await LoadAssets();
+            return await base.Init();
         }
-
-        private void LoadNextAsset()
+        private async Task LoadAssets()
         {
-            // RHTebug.Log($"index: {_loadIndex}, count: {_clips.Count}");
-            if (_loadIndex >= _clips.Count)
+            List<Task> loadTasks = new List<Task>();
+            foreach (var clip in _clips)
             {
-                RHTebug.Log("Finished loading Audio Clips");
-                if (_initializationStatus == ManagerInitializationStatus.Initializing)
-                {
-                    _initializationStatus = ManagerInitializationStatus.Success;
-                    OnInitialized?.Invoke();
-                }
-                return;
+                loadTasks.Add(LoadAsset(clip));
             }
-            _clips[_loadIndex].LoadAssetAsync<AudioClip>().Completed += OnAssetLoaded;
+            await Task.WhenAll(loadTasks);
         }
 
-        void OnAssetLoaded(AsyncOperationHandle<AudioClip> handle)
+        private async Task LoadAsset(AssetReferenceAudioClip clip)
         {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+#if RELEASE
+            if (clip.IsDone) return;
+#endif
+            
+            var result = await UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<AudioClip>(clip).Task;
+            if (result == null)
             {
-                RHTebug.LogSuccess($"Asset {handle.Result.name} loaded successfully!");
+                RHTebug.LogError($"Failed to load video clip with GUID {clip.AssetGUID}!");
             }
             else
             {
-                RHTebug.LogError($"Asset {_clips[_loadIndex]} loaded unseccessfully");
+                RHTebug.LogSuccess($"AudioClip {result.name} loaded successfully!");
             }
-            _loadIndex++;
-            LoadNextAsset();
         }
 
         public AudioClip GetAudioClip(string clip)

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using RedHeadToolz.Debugging;
 using RedHeadToolz.Utils;
 using UnityEngine;
+using System;
+using System.Threading.Tasks;
+
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,7 +14,7 @@ using UnityEditor;
 
 namespace RedHeadToolz
 {
-    public enum ManagerInitializationStatus
+    public enum InitializationStatus
     {
         Uninitialized,
         Initializing,
@@ -20,9 +24,6 @@ namespace RedHeadToolz
 
     public class GeneralManager : Singleton<GeneralManager>
     {
-        private ManagerInitializationStatus _initializationStatus = ManagerInitializationStatus.Uninitialized;
-        public ManagerInitializationStatus InitializationStatus => _initializationStatus;
-        public bool IsInitialized => _initializationStatus == ManagerInitializationStatus.Success;
 
         [SerializeField] private List<BaseManager> _managers = new List<BaseManager>();
         
@@ -31,34 +32,30 @@ namespace RedHeadToolz
         protected override void Awake()
         {
             base.Awake();
-            StartCoroutine(InitializeManagers());
         }
 
-        private IEnumerator InitializeManagers()
+        public async Task InitializeManagers(List<BaseManager> toInit)
         {
-            _initializationStatus = ManagerInitializationStatus.Initializing;
-
-            foreach (BaseManager manager in _managers)
+            foreach (BaseManager manager in toInit)
             {
                 BaseManager newManager = Instantiate(manager, transform).GetComponent<BaseManager>();
+                var result = await newManager.Init();
                 _activeManagers.Add(newManager);
-                if (newManager.InitializationStatus == ManagerInitializationStatus.Uninitialized)
-                {
-                    newManager.Init();
-                }
 
-                while (newManager.IsInitialized == false)
+                if (result == InitializationStatus.Success)
                 {
-                    yield return null;
+                    RHTebug.LogSuccess($"Manager {newManager.GetType()} initialized successfully.");
+                }
+                else if (result == InitializationStatus.Failure)
+                {
+                    RHTebug.LogError($"Manager {newManager.GetType()} failed to initialize.");
                 }
             }
-
-            _initializationStatus = ManagerInitializationStatus.Success;
         }
 
         public T GetManager<T>() where T : BaseManager
         {
-            foreach (BaseManager manager in _managers)
+            foreach (BaseManager manager in _activeManagers)
             {
                 if (manager is T)
                 {
@@ -70,26 +67,23 @@ namespace RedHeadToolz
             return null;
         }
 
-        // public T AddManager<T>() where T : BaseManager
-        // {
-        //     if (GetManager<T>() != null)
-        //     {
-        //         RHTebug.LogWarning($"Manager of type {typeof(T)} already exists.");
-        //         return GetManager<T>();
-        //     }
-        //     foreach (BaseManager manager in _allManagers)
-        //     {
-        //         // not sure if screen manager will work for this where it has a rect transform and needs a canvas
-        //         BaseManager newManager = Instantiate(manager, transform).GetComponent<BaseManager>();
-        //         _managers.Add(newManager);
-        //         if (newManager.InitializationStatus == ManagerInitializationStatus.Uninitialized)
-        //         {
-        //             newManager.Init();
-        //         }
-        //         return newManager as T;
-        //     }
-        //     return null;
-        // }
+        public async Task<T> AddManager<T>() where T : BaseManager
+        {
+            if (GetManager<T>() != null)
+            {
+                RHTebug.LogWarning($"Manager of type {typeof(T)} already exists.");
+                return GetManager<T>();
+            }
+            foreach (BaseManager manager in _managers)
+            {
+                BaseManager newManager = Instantiate(manager, transform).GetComponent<BaseManager>();
+                _managers.Add(newManager);
+                await newManager.Init();
+                
+                return newManager as T;
+            }
+            return null;
+        }
 
         // public T RemoveManager<T>() where T : BaseManager
         // {

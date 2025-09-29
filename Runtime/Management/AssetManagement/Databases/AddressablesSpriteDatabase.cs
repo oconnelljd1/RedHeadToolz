@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using RedHeadToolz.Addressables;
+using System.Threading.Tasks;
+
 
 
 #if UNITY_EDITOR
@@ -16,56 +18,86 @@ namespace RedHeadToolz
     public class AddressablesSpriteDatabase : BaseAssetDatabase
     {
         [SerializeField] private List<AssetReferenceSprite> _sprites;
-        private int _loadIndex;
 
-        public override void Init()
+        public override async Task<InitializationStatus> Init()
         {
             RHTebug.Log("Initializing Addresables Sprite Database");
-            _loadIndex = 0;
-            _initializationStatus = ManagerInitializationStatus.Initializing;
-            LoadNextAsset();
-            // base.Init();
+            await LoadAssets();
+            return await base.Init();
         }
 
-        private void LoadNextAsset()
+        private async Task LoadAssets()
         {
-            if (_loadIndex >= _sprites.Count)
+            List<Task> loadTasks = new List<Task>();
+            foreach (var sprite in _sprites)
             {
-                RHTebug.Log("Finished loading Sprites");
-                if (_initializationStatus == ManagerInitializationStatus.Initializing)
-                {
-                    _initializationStatus = ManagerInitializationStatus.Success;
-                }
+                loadTasks.Add(LoadAsset(sprite));
+            }
+            await Task.WhenAll(loadTasks);
+        }
+
+        private async Task LoadAsset(AssetReferenceSprite sprite)
+        {
+// #if RELEASE
+//             if (clip.IsDone) return;
+// #endif
+            var loadEvent = UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<Sprite>(sprite);
+#if RELEASE
+            if (loadEvent.Status.Equals(AsyncOperationStatus.Succeeded))
+            {
+                RHTebug.Log($"Sprite {sprite.Asset.name} already loaded");
                 return;
             }
-            _sprites[_loadIndex].LoadAssetAsync<Sprite>().Completed += OnAssetLoaded;
-        }
+#endif
 
-        void OnAssetLoaded(AsyncOperationHandle<Sprite> handle)
-        {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
+            var result = await loadEvent.Task;
+            if (result == null)
             {
-                RHTebug.LogSuccess($"Asset {handle.Result.name} loaded successfully!");
+                RHTebug.LogError($"Failed to load video clip with GUID {sprite.AssetGUID}!");
             }
             else
             {
-                RHTebug.LogError($"Asset {_sprites[_loadIndex]} loaded unseccessfully");
+                RHTebug.LogSuccess($"Sprite {result.name} loaded successfully!");
             }
-            _loadIndex++;
-            LoadNextAsset();
+
+            // var result = await UnityEngine.AddressableAssets.Addressables.LoadAssetAsync<Sprite>(sprite).Task;
+            // if (result == null)
+            // {
+            //     RHTebug.LogError($"Failed to load video clip with GUID {sprite.AssetGUID}!");
+            // }
+            // else
+            // {
+            //     RHTebug.LogSuccess($"Clip {result.name} loaded successfully!");
+            // }
         }
 
         public Sprite GetSprite(string sprite)
         {
-            var newSprite = _sprites.Find(x => x.Asset.name == sprite);
+            RHTebug.Log("maybe?");
+            // var newSprite = _sprites.Find(x => x.Asset.name == sprite);
+            var newSprite = _sprites.Find(
+            delegate(AssetReferenceSprite x)
+            {
+                RHTebug.Log("checking " + x.Asset);
+                RHTebug.Log("checking " + x.Asset.name);
+                return x.Asset.name == sprite;
+            }
+            );
+            RHTebug.Log("" + newSprite.Asset);
             if (newSprite == null)
                 RHTebug.LogError($"Sprite {sprite} not found!");
             return (Sprite)newSprite.Asset;
+            // return null;
         }
 
         public Sprite GetSpriteByGUID(string GUID)
         {
+            // foreach (var s in _sprites)
+            // {
+            //     RHTebug.Log(s.AssetGUID);
+            // }
             var newSprite = _sprites.Find(x => x.AssetGUID == GUID);
+            RHTebug.Log("" + newSprite.Asset);
             if (newSprite == null)
                 RHTebug.LogError($"Sprite {GUID} not found!");
             return (Sprite)newSprite.Asset;

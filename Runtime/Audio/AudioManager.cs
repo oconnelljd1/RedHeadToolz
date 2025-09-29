@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using RedHeadToolz.Debugging;
 using UnityEngine;
 
@@ -11,16 +12,13 @@ namespace RedHeadToolz.Audio
         // [SerializeField] private List<AudioClip> _clips;
         private List<AudioChannel> _channels = new List<AudioChannel>();
 
-        public override void Init()
+        public override async Task<InitializationStatus> Init()
         {
-            _initializationStatus = ManagerInitializationStatus.Initializing;
-            // RHTebug.Log("Audio Init");
             foreach (var id in _channelIds)
             {
-                RHTebug.Log($"Adding Audio Channel {id}");
                 AddChannel(id);
             }
-            base.Init();
+            return await base.Init();
         }
 
         public void AddChannel(string id, int sources = 1)
@@ -37,24 +35,18 @@ namespace RedHeadToolz.Audio
             channel.gameObject.name = $"AudioChannel_{id}";
 
             _channels.Add(channel);
-            RHTebug.Log($"Channels: {_channels.Count}");
         }
 
         public AudioChannel GetChannel(string channel)
         {
-            RHTebug.Log($"Channels: {_channels.Count}");
             foreach (var chan in _channels)
             {
-                RHTebug.Log($"Channel: {chan.Id}");
                 if (chan.Id == channel)
                     return chan;
             }
-            // var chan = _channels.Find(x=>x.Id == channel);
-            // if (chan == null)
-            // {
+            
             RHTebug.LogError($"Channel {channel} not found");
-            // }
-            // return chan;
+            
             return null;
         }
 

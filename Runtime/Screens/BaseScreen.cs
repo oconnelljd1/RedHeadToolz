@@ -37,7 +37,6 @@ namespace RedHeadToolz.Screens
                 return _inputLock.activeSelf;
             }
             set{
-                RHTebug.Log($"Setting input lock to {value}");
                 _inputLock.SetActive(value);
             }
         }

@@ -3,6 +3,8 @@ using RedHeadToolz.Debugging;
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Video;
+using System.Threading.Tasks;
+
 
 
 #if UNITY_EDITOR
@@ -15,31 +17,30 @@ namespace RedHeadToolz
     {
         [SerializeField] private List<BaseAssetDatabase> _databases;
 
-        public override void Init()
+        public override async Task<InitializationStatus> Init()
         {
-            _initializationStatus = ManagerInitializationStatus.Initializing;
-            StartCoroutine(InitializeDatabases());
-            // base.Init();
+            await InitializeDatabases();
+            return await base.Init();
         }
 
-        private IEnumerator InitializeDatabases()
+        private async Task InitializeDatabases()
         {
             foreach (BaseAssetDatabase database in _databases)
             {
                 // RHTebug.Log($"DatabaseStatus: {database.InitializationStatus}");
                 if (database == null) continue;
 
-                database.Init(); // forcing Init becuase scriptable object holds onto it's values between play sessions
+                var result = await database.Init(); // forcing Init becuase scriptable object holds onto it's values between play sessions
 
-                while (database.IsInitialized == false)
+                if (result == InitializationStatus.Success)
                 {
-                    yield return null;
+                    RHTebug.LogSuccess($"Database {database.name} initialized successfully.");
+                }
+                else if (result == InitializationStatus.Failure)
+                {
+                    RHTebug.LogError($"Database {database.name} failed to initialize.");
                 }
             }
-
-            // RHTebug.Log("AssetManager initialized!");
-            _initializationStatus = ManagerInitializationStatus.Success;
-            OnInitialized?.Invoke();
         }
 
         public T GetDatabase<T>() where T : BaseAssetDatabase
@@ -68,6 +69,7 @@ namespace RedHeadToolz
             }
             if (GetDatabase<AddressablesSpriteDatabase>() != null)
             {
+                RHTebug.Log("herrrr");
                 var newSprite = GetDatabase<AddressablesSpriteDatabase>().GetSprite(sprite);
                 if (newSprite != null)
                 {

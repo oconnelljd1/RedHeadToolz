@@ -4,32 +4,33 @@ using RedHeadToolz.Debugging;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using System;
+using System.Threading.Tasks;
 
 namespace RedHeadToolz
 {
-    
     public class SceneManager : BaseManager
     {
-        // [SerializeField] private List<Scene> initialScenes = new List<Scene>();
-        [SerializeField] private List<string> initialScenes = new List<string>();
-        private List<string> activeScenes = new List<string>();
+        protected List<string> activeScenes = new List<string>();
 
         public Action<string> OnSceneLoaded;
         public Action<string> OnSceneUnloaded;
 
-        public override void Init()
+        public override async Task<InitializationStatus> Init()
         {
-            _initializationStatus = ManagerInitializationStatus.Initializing;
-            // foreach (Scene scene in initialScenes)
-            foreach (string scene in initialScenes)
-            {
-                AddScene(scene);
-            }
-            base.Init();
+            activeScenes = new List<string> { UnityEngine.SceneManagement.SceneManager.GetActiveScene().name };
+
+            return await base.Init();
         }
 
         public void LoadScene(string sceneName)
         {
+            RHTebug.Log($"Loading scene: {sceneName}");
+            if (string.IsNullOrEmpty(sceneName))
+            {
+                RHTebug.LogError($"Tried to load a scene with an empty or null name!");
+                return;
+            }
+            
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
             activeScenes = new List<string> { sceneName };
             OnSceneLoaded?.Invoke(sceneName);
@@ -37,6 +38,7 @@ namespace RedHeadToolz
 
         public void AddScene(string sceneName, bool forceLoad = false)
         {
+            RHTebug.Log($"Adding scene: {sceneName}");
             if (string.IsNullOrEmpty(sceneName))
             {
                 RHTebug.LogError($"Tried to load a scene with an empty or null name!");
@@ -47,8 +49,8 @@ namespace RedHeadToolz
                 RHTebug.LogWarning($"Tried to load a scene that is already loaded: {sceneName}");
                 return;
             }
-            activeScenes.Add(sceneName);
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
+            activeScenes.Add(sceneName);
             OnSceneLoaded?.Invoke(sceneName);
         }
 
