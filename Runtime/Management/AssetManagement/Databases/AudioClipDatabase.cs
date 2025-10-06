@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace RedHeadToolz
 {
-    [CreateAssetMenu(fileName = "AudioClipDatabase", menuName = "RedHeadToolz/Databases/AudioClipDatabase")]
+    // [CreateAssetMenu(fileName = "AudioClipDatabase", menuName = "RedHeadToolz/Databases/AudioClipDatabase")]
     public class AudioClipDatabase : BaseAssetDatabase
     {
         [SerializeField] private List<AudioClip> _clips;

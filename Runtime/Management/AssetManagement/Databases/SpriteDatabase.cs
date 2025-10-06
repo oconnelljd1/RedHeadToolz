@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace RedHeadToolz
 {
-    [CreateAssetMenu(fileName = "SpriteDatabase", menuName = "RedHeadToolz/Databases/SpriteDatabase")]
+    // [CreateAssetMenu(fileName = "SpriteDatabase", menuName = "RedHeadToolz/Databases/SpriteDatabase")]
     public class SpriteDatabase : BaseAssetDatabase
     {
         [SerializeField] private List<Sprite> _sprites;

@@ -14,7 +14,7 @@ using UnityEditor;
 
 namespace RedHeadToolz
 {
-    [CreateAssetMenu(fileName = "AddressablesSpriteDatabase", menuName = "RedHeadToolz/Databases/AddressablesSpriteDatabase")]
+    // [CreateAssetMenu(fileName = "AddressablesSpriteDatabase", menuName = "RedHeadToolz/Databases/AddressablesSpriteDatabase")]
     public class AddressablesSpriteDatabase : BaseAssetDatabase
     {
         [SerializeField] private List<AssetReferenceSprite> _sprites;

@@ -6,7 +6,7 @@ using UnityEngine;
 namespace RedHeadToolz
 {
     // [CreateAssetMenu(fileName = "BaseAssetDatabase", menuName = "Scriptable Objects/BaseAssetDatabase")]
-    public class BaseAssetDatabase : ScriptableObject
+    public class BaseAssetDatabase : MonoBehaviour
     {
         public Action OnInitialized;
         public Action OnDisposed;

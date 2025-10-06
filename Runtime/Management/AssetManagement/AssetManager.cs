@@ -174,11 +174,13 @@ namespace RedHeadToolz
 
         List<BaseAssetDatabase> newDatabases = new List<BaseAssetDatabase>();
         // string[] guids = AssetDatabase.FindAssets("t:ClosedCaptionsData", new[] { "Assets/ScriptableObjects/ClosedCaptions" });
-        string[] guids = AssetDatabase.FindAssets("t:BaseAssetDatabase", new[] { "Assets" });
+        string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets" });
         foreach (var guid in guids)
         {
-            BaseAssetDatabase database = (BaseAssetDatabase)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(BaseAssetDatabase));
-            newDatabases.Add(database);
+            GameObject prefab = (GameObject)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(GameObject));
+            BaseAssetDatabase database = prefab.GetComponent<BaseAssetDatabase>();
+            if(database != null)
+                newDatabases.Add(database);
         }
 
         controller._databases = newDatabases;

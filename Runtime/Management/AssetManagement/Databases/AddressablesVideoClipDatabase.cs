@@ -13,7 +13,7 @@ using UnityEditor;
 
 namespace RedHeadToolz
 {
-    [CreateAssetMenu(fileName = "AddressablesVideoClipDatabase", menuName = "RedHeadToolz/Databases/AddressablesVideoClipDatabase")]
+    // [CreateAssetMenu(fileName = "AddressablesVideoClipDatabase", menuName = "RedHeadToolz/Databases/AddressablesVideoClipDatabase")]
     public class AddressablesVideoClipDatabase : BaseAssetDatabase
     {
         [SerializeField] private List<AssetReferenceVideoClip> _clips;
