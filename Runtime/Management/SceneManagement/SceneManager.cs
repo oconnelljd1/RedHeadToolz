@@ -36,7 +36,7 @@ namespace RedHeadToolz
             OnSceneLoaded?.Invoke(sceneName);
         }
 
-        public void AddScene(string sceneName, bool forceLoad = false)
+        public virtual void AddScene(string sceneName, bool forceLoad = false)
         {
             RHTebug.Log($"Adding scene: {sceneName}");
             if (string.IsNullOrEmpty(sceneName))

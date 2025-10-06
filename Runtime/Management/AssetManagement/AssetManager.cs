@@ -5,8 +5,6 @@ using System.Collections;
 using UnityEngine.Video;
 using System.Threading.Tasks;
 
-
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -16,6 +14,7 @@ namespace RedHeadToolz
     public class AssetManager : BaseManager
     {
         [SerializeField] private List<BaseAssetDatabase> _databases;
+        private List<BaseAssetDatabase> _activeDatabases = new List<BaseAssetDatabase>();
 
         public override async Task<InitializationStatus> Init()
         {
@@ -30,7 +29,9 @@ namespace RedHeadToolz
                 // RHTebug.Log($"DatabaseStatus: {database.InitializationStatus}");
                 if (database == null) continue;
 
-                var result = await database.Init(); // forcing Init becuase scriptable object holds onto it's values between play sessions
+                var newDatabase = Instantiate(database, transform).GetComponent<BaseAssetDatabase>();
+                var result = await newDatabase.Init();
+                _activeDatabases.Add(newDatabase);
 
                 if (result == InitializationStatus.Success)
                 {
@@ -45,7 +46,7 @@ namespace RedHeadToolz
 
         public T GetDatabase<T>() where T : BaseAssetDatabase
         {
-            foreach (BaseAssetDatabase database in _databases)
+            foreach (BaseAssetDatabase database in _activeDatabases)
             {
                 if (database is T)
                 {
@@ -67,30 +68,7 @@ namespace RedHeadToolz
                     return newSprite;
                 }
             }
-            if (GetDatabase<AddressablesSpriteDatabase>() != null)
-            {
-                RHTebug.Log("herrrr");
-                var newSprite = GetDatabase<AddressablesSpriteDatabase>().GetSprite(sprite);
-                if (newSprite != null)
-                {
-                    return newSprite;
-                }
-            }
             RHTebug.LogError($"Sprite {sprite} not found in any database!");
-            return null;
-        }
-
-        public Sprite GetSpriteByGUID(string GUID)
-        {
-            if (GetDatabase<AddressablesSpriteDatabase>() != null)
-            {
-                var newSprite = GetDatabase<AddressablesSpriteDatabase>().GetSpriteByGUID(GUID);
-                if (newSprite != null)
-                {
-                    return newSprite;
-                }
-            }
-            RHTebug.LogError($"Sprite {GUID} not found in any database!");
             return null;
         }
 
@@ -104,29 +82,7 @@ namespace RedHeadToolz
                     return newClip;
                 }
             }
-            if (GetDatabase<AddressablesAudioClipDatabase>() != null)
-            {
-                var newClip = GetDatabase<AddressablesAudioClipDatabase>().GetAudioClip(clip);
-                if (newClip != null)
-                {
-                    return newClip;
-                }
-            }
             RHTebug.LogError($"Audio Clip {clip} not found in any database!");
-            return null;
-        }
-        
-        public AudioClip GetAudioClipByGUID(string GUID)
-        {
-            if (GetDatabase<AddressablesAudioClipDatabase>() != null)
-            {
-                var newClip = GetDatabase<AddressablesAudioClipDatabase>().GetAudioClipByGUID(GUID);
-                if (newClip != null)
-                {
-                    return newClip;
-                }
-            }
-            RHTebug.LogError($"Audio Clip {GUID} not found in any database!");
             return null;
         }
         
@@ -140,29 +96,7 @@ namespace RedHeadToolz
                     return newClip;
                 }
             }
-            if (GetDatabase<AddressablesVideoClipDatabase>() != null)
-            {
-                var newClip = GetDatabase<AddressablesVideoClipDatabase>().GetVideoClip(clip);
-                if (newClip != null)
-                {
-                    return newClip;
-                }
-            }
             RHTebug.LogError($"Video Clip {clip} not found in any database!");
-            return null;
-        }
-        
-        public VideoClip GetVideoClipByGUID(string GUID)
-        {
-            if (GetDatabase<AddressablesVideoClipDatabase>() != null)
-            {
-                var newClip = GetDatabase<AddressablesVideoClipDatabase>().GetVideoClipByGUID(GUID);
-                if (newClip != null)
-                {
-                    return newClip;
-                }
-            }
-            RHTebug.LogError($"Video Clip {GUID} not found in any database!");
             return null;
         }
 

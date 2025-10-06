@@ -50,16 +50,6 @@ namespace RedHeadToolz.Audio
             return toPlay;
         }
 
-        public void Play(string clip)
-        {
-            Play(GeneralManager.Instance.GetManager<AssetManager>().GetAudioClip(clip));
-        }
-
-        public void Play(string clip, Action callback)
-        {
-            Play(GeneralManager.Instance.GetManager<AssetManager>().GetAudioClip(clip), callback);
-        }
-
         public void Play(AudioClip clip)
         {
             GetSource().Play(clip);
@@ -83,11 +73,6 @@ namespace RedHeadToolz.Audio
         {
             yield return new WaitForSeconds(dur);
             callback();
-        }
-
-        public void Loop(string clip)
-        {
-            Loop(GeneralManager.Instance.GetManager<AssetManager>().GetAudioClip(clip));
         }
 
         public void Loop(AudioClip clip)

@@ -7,9 +7,9 @@ namespace RedHeadToolz.Tools
     public class InitController : MonoBehaviour
     {
         [SerializeField] protected GeneralManager _gm;
-        [SerializeField] private List<BaseManager> _preloadManagers = new List<BaseManager>();
+        [SerializeField] protected List<BaseManager> _preloadManagers = new List<BaseManager>();
         // [SerializeField] private List<Scene> initialScenes = new List<Scene>();
-        [SerializeField] private List<string> _preloadScenes = new List<string>();
+        [SerializeField] protected List<string> _preloadScenes = new List<string>();
 
         // [SerializeField] protected Scene _sceneToLoad;
         [SerializeField] protected string _sceneToLoad;

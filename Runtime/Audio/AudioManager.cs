@@ -50,24 +50,6 @@ namespace RedHeadToolz.Audio
             return null;
         }
 
-        // Depricate, find channels and play there
-        public void PlaySoundOnChannel(string clip, string channel)
-        {
-            var chan = _channels.Find(x=> x.Id == channel);
-            if(chan == null) return;
-
-            chan.Play(GeneralManager.Instance.GetManager<AssetManager>().GetAudioClip(clip));
-        }
-
-        // depricate, find channel and stop there
-        public void StopChannel(string channel)
-        {
-            var chan = _channels.Find(x=> x.Id == channel);
-            if(chan == null) return;
-
-            chan.Stop();
-        }
-
         public void StopAllChannels()
         {
             foreach (var channel in _channels)
