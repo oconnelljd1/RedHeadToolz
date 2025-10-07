@@ -78,6 +78,7 @@ namespace RedHeadToolz.Screens
                 transition.Complete(_root);
             }
             _showing = true;
+            _lockInput = false;
         }
 
         public virtual void Hide(Action callback = null)

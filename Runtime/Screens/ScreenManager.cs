@@ -143,7 +143,7 @@ namespace RedHeadToolz.Screens
             ScreenManager screenManager = (ScreenManager)menuCommand.context;
 
             List<BaseScreen> newScreens = new List<BaseScreen>();
-            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets/Prefabs/Screens" });
+            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { "Assets" });
             foreach (var guid in guids)
             {
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
