@@ -10,6 +10,7 @@ namespace RedHeadToolz.Tools
         [SerializeField] protected GeneralManager _gm;
         // [SerializeField] protected Scene _sceneToLoad;
         [SerializeField] protected string _sceneToLoad;
+
         protected virtual void Start()
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;

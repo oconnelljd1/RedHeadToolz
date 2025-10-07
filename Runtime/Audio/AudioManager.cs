@@ -15,7 +15,7 @@ namespace RedHeadToolz.Audio
         [SerializeField] private GameObject _channelPrefab;
         [SerializeField] private List<string> _channelIds = new List<string>();
         // [SerializeField] private List<AudioClip> _clips;
-        [SerializeField] private List<AssetReferenceAudioClip> _clips;
+        [SerializeField] private List<AudioClip> _clips;
         private List<AudioChannel> _channels = new List<AudioChannel>();
         private int _loadIndex;
 
@@ -27,36 +27,7 @@ namespace RedHeadToolz.Audio
             {
                 AddChannel(id);
             }
-            LoadNextAsset();
-            // base.Init();
-        }
-
-        private void LoadNextAsset()
-        {
-            if (_loadIndex >= _clips.Count)
-            {
-                RHTebug.Log("Finished loading Clips");
-                if (_initializationStatus == ManagerInitializationStatus.Initializing)
-                {
-                    _initializationStatus = ManagerInitializationStatus.Success;
-                }
-                return;
-            }
-            _clips[_loadIndex].LoadAssetAsync().Completed += OnAssetLoaded;
-        }
-
-        void OnAssetLoaded(AsyncOperationHandle<AudioClip> handle)
-        {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                RHTebug.LogSuccess($"Asset {handle.Result.name} loaded successfully!");
-            }
-            else
-            {
-                RHTebug.LogError($"Asset {_clips[_loadIndex]} loaded unseccessfully");
-            }
-            _loadIndex++;
-            LoadNextAsset();
+            base.Init();
         }
 
         public void AddChannel(string id, int sources = 1)
@@ -81,10 +52,10 @@ namespace RedHeadToolz.Audio
 
         public AudioClip GetClip(string clip)
         {
-            var newClip = _clips.Find(x=>x.Asset.name == clip);
+            var newClip = _clips.Find(x=>x.name == clip);
             if(newClip == null)
                 RHTebug.LogError($"Clip {clip} not found!");
-            return (AudioClip)newClip.Asset;
+            return newClip;
         }
 
         // Depricate, find channels and play there
@@ -103,6 +74,14 @@ namespace RedHeadToolz.Audio
             if(chan == null) return;
 
             chan.Stop();
+        }
+
+        public void StopAllChannels()
+        {
+            foreach (var channel in _channels)
+            {
+                channel.Stop();
+            }
         }
 
         // depricate, find channel and mute there
@@ -128,15 +107,15 @@ namespace RedHeadToolz.Audio
         {
             AudioManager audioManager = (AudioManager)menuCommand.context;
 
-            List<AssetReferenceAudioClip> newClips = new List<AssetReferenceAudioClip>();
-            string[] guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets/Audio" });
+            List<AudioClip> newClips = new List<AudioClip>();
+            string[] guids = AssetDatabase.FindAssets("t:AudioClip", new[] { "Assets" });
             foreach (var guid in guids)
             {
-                // AssetReferenceAudioClip clip = (AssetReferenceAudioClip)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(AssetReferenceAudioClip));
-                // newClips.Add(clip);
-                AddressableFactory.MakeAddressable(AssetDatabase.GUIDToAssetPath(guid));
-                var assetRef = new AssetReferenceAudioClip(guid);
-                newClips.Add(assetRef);
+                AudioClip clip = (AudioClip)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(AudioClip));
+                newClips.Add(clip);
+                // AddressableFactory.MakeAddressable(AssetDatabase.GUIDToAssetPath(guid));
+                // var assetRef = new AssetReferenceAudioClip(guid);
+                // newClips.Add(assetRef);
             }
 
             audioManager._clips = newClips;

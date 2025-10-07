@@ -91,6 +91,23 @@ namespace RedHeadToolz.Screens
             Destroy(screen.gameObject);
         }
 
+        public void CloseAllScreens()
+        {
+            for (int i = _screenStack.Count - 1; i > -1; i--)
+            {
+                _screenStack[i].Close();
+            }
+        }
+
+        public void CloseAllScreensImmediate()
+        {
+            for (int i = _screenStack.Count - 1; i > -1; i--)
+            {
+                _screenStack[i].CloseImmediate();
+            }
+        }
+
+
         private void UpdateStackDisplay()
         {
             bool hideStack = false;

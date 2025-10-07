@@ -65,5 +65,5 @@ namespace RedHeadToolz.Addressables
         //     UnityEditor.Compilation.CompilationPipeline.RequestScriptCompilation();
         // }
     }
-    #endif
 }
+#endif
