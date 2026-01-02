@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Runtime/Addressables.meta
 guid: ef0b4f5593589e74bb9fc04f3b53c1e7
+========
+guid: 39dc1a653cdce0b47ae055fcd43b1be2
+>>>>>>>> dev:Runtime/ClosedCaptions.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

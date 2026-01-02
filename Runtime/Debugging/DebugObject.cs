@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class DebugObject : MonoBehaviour
+namespace RedHeadToolz.Debugging
 {
-    public void Awake()
+    public class DebugObject : MonoBehaviour
     {
+        public void Awake()
+        {
 #if RELEASE
-        gameObject.SetActive(false);
+            gameObject.SetActive(false);
 #endif
+        }
     }
 }
