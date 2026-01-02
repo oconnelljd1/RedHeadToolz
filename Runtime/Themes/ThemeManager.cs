@@ -1,10 +1,9 @@
-using RedHeadToolz.Utils;
 using UnityEngine;
 using UnityEngine.Events;
 
 namespace RedHeadToolz.Themes
 {
-    public class ThemeController : Singleton<ThemeController>
+    public class ThemeManager : BaseManager
     {
         [SerializeField] private ThemeData defaultTheme;
         public UnityAction<ThemeData> ThemeChanged;

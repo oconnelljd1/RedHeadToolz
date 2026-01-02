@@ -1,3 +1,4 @@
+using RedHeadToolz.Debugging;
 using UnityEngine;
 
 namespace RedHeadToolz.Themes
@@ -8,17 +9,29 @@ namespace RedHeadToolz.Themes
 
         private void Start()
         {
-            UpdateColor(ThemeController.Instance.GetTheme());
+            UpdateColor(GeneralManager.Instance.GetManager<ThemeManager>().GetTheme());
         }
 
         private void OnEnable()
         {
-            ThemeController.Instance.ThemeChanged += OnThemeChanged;
+            var ThemeManager = GeneralManager.Instance.GetManager<ThemeManager>();
+            if (ThemeManager == null)
+            {
+                RHTebug.LogError("ThemeManager is not initialized!");
+                return;
+            }
+            ThemeManager.ThemeChanged += OnThemeChanged;
         }
 
         private void OnDisable()
         {
-            ThemeController.Instance.ThemeChanged -= OnThemeChanged;
+            var ThemeManager = GeneralManager.Instance.GetManager<ThemeManager>();
+            if(ThemeManager != null)
+            {
+                RHTebug.LogError("ThemeManager is not initialized!");
+                return;
+            }
+            ThemeManager.ThemeChanged -= OnThemeChanged;
         }
 
         private void OnThemeChanged(ThemeData theme)
