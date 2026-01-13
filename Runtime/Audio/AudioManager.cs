@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using RedHeadToolz.Addressables;
 using RedHeadToolz.Debugging;
 using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 #if UNITY_EDITOR
 using UnityEditor;

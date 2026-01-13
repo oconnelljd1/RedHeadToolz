@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using RedHeadToolz.Debugging;
-using UnityEngine.ResourceManagement.AsyncOperations;
-using RedHeadToolz.Addressables;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -38,7 +35,7 @@ namespace RedHeadToolz
             SpriteManager spriteManager = (SpriteManager)menuCommand.context;
 
             List<Sprite> newSprites = new List<Sprite>();
-            string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets/Sprites" });
+            string[] guids = AssetDatabase.FindAssets("t:Sprite", new[] { "Assets" });
             foreach (var guid in guids)
             {
                 Sprite sprite = (Sprite)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(Sprite));

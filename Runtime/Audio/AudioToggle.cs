@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using RedHeadToolz.Debugging;
 using UnityEngine;
 
 namespace RedHeadToolz.Audio
@@ -14,8 +15,20 @@ namespace RedHeadToolz.Audio
         
         void Start()
         {
-            // do this in start so that Main Menu controller can create the channels in Awake
-            _muted = GeneralManager.Instance.GetManager<AudioManager>().GetChannel(_channel).Muted;
+            _Audio = GeneralManager.Instance.GetManager<AudioManager>().GetChannel(_channel);
+            _Audio.MuteChanged += UpdateMuted;
+            UpdateMuted();
+        }
+
+        void OnDestroy()
+        {
+            _Audio.MuteChanged -= UpdateMuted;
+        }
+
+        private void UpdateMuted()
+        {
+            RHTebug.Log($"UpdateMuted, muted: {_Audio.Muted}");
+            _muted = _Audio.Muted;
             UpdateSprites();
         }
 
@@ -27,9 +40,7 @@ namespace RedHeadToolz.Audio
 
         public void ToggleChannel()
         {
-            _muted = !_muted;
-            UpdateSprites();
-            GeneralManager.Instance.GetManager<AudioManager>().SetChannelMuted(_channel, _muted);
+            _Audio.ToggleMuted();
         }
     }
 }

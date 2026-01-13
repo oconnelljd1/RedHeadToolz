@@ -12,9 +12,12 @@ namespace RedHeadToolz.Audio
         public bool Playing => source.isPlaying;
         public AudioClip Clip => source.clip;
         public bool Expired => currentTime > killTime;
+        public float Volume => source.volume;
+        private AudioChannel _channel;
 
-        public void Init(float kTime = 0f)
+        public void Init(AudioChannel channel, float kTime = 0f)
         {
+            _channel = channel;
             killTime = kTime;
         }
 
@@ -43,7 +46,7 @@ namespace RedHeadToolz.Audio
 
         public void Tick()
         {
-            if(Playing)return;
+            if (Playing) return;
 
             currentTime += UnityEngine.Time.deltaTime;
             // if(currentTime > killTime)
@@ -56,7 +59,12 @@ namespace RedHeadToolz.Audio
 
         public void Unmute()
         {
-            source.volume = 1;
+            source.volume = _channel.Volume;
+        }
+        
+        public void SetVolume(float volume)
+        {
+            source.volume = volume;
         }
     }
 }

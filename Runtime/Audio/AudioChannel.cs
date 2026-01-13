@@ -17,6 +17,11 @@ namespace RedHeadToolz.Audio
         int poolSize = 1;
         private float killTime = 10f;
         private bool _muted = false;
+        private float _volume = 1f;
+        public float Volume => _volume;
+
+        public Action VolumeChanged;
+        public Action MuteChanged;
 
         public void Init(string id, int poolSize = 1, float killTime = 10f)
         {
@@ -24,9 +29,18 @@ namespace RedHeadToolz.Audio
             this.poolSize = poolSize;
             this.killTime = killTime;
 
-            for(int i = 0; i < poolSize; i++)
+            for (int i = 0; i < poolSize; i++)
             {
-                SpawnSound().Init(killTime);
+                SpawnSound().Init(this, killTime);
+            }
+            
+            if(PlayerPrefs.HasKey(id + "_Volume"))
+            {
+                SetVolume(PlayerPrefs.GetFloat(id + "_Volume"));
+            }
+            else
+            {
+                SetVolume(_volume);
             }
         }
 
@@ -113,31 +127,79 @@ namespace RedHeadToolz.Audio
             return sound;
         }
 
+        public void SetMuted(bool muted)
+        {
+            if(muted)
+            {
+                Mute();
+            }
+            else
+            {
+                Unmute();
+            }
+        }
+
+        public void ToggleMuted()
+        {
+            if(_muted)
+            {
+                Unmute();
+            }
+            else
+            {
+                Mute();
+            }
+        }
+
         public void Mute()
         {
             _muted = true;
-            foreach(var source in _sources)
+            foreach (var source in _sources)
             {
                 source.Mute();
             }
+            MuteChanged?.Invoke();
         }
 
         public void Unmute()
         {
             _muted = false;
-            foreach(var source in _sources)
+            foreach (var source in _sources)
             {
                 source.Unmute();
             }
+            MuteChanged?.Invoke();
+        }
+
+        public void SetVolume(float volume)
+        {
+            if(volume == _volume) return;
+
+            // if (_volume == 0)
+            // {
+            //     Mute();
+            //     return;
+            // }
+
+            _volume = volume;
+
+            foreach (var source in _sources)
+            {
+                source.SetVolume(volume);
+            }
+            PlayerPrefs.SetFloat(id + "_Volume", _volume);
+            
+            if (_muted) Unmute();
+            VolumeChanged?.Invoke();
         }
 
         public bool IsPlaying(string clip = "")
         {
-            if(clip == "")
+            if (clip == "")
             {
-                foreach(var source in _sources)
+                foreach (var source in _sources)
                 {
-                    if(source.Playing)
+                    if (source.Playing)
                     {
                         return true;
                     }
@@ -145,9 +207,9 @@ namespace RedHeadToolz.Audio
                 return false;
             }
 
-            foreach(var source in _sources)
+            foreach (var source in _sources)
             {
-                if(source.Clip.name == clip)
+                if (source.Clip.name == clip)
                 {
                     return true;
                 }
