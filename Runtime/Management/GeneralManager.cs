@@ -54,7 +54,12 @@ namespace RedHeadToolz
             _initializationStatus = ManagerInitializationStatus.Success;
         }
 
-        public T GetManager<T>() where T : BaseManager
+        public static T GetManager<T>() where T : BaseManager
+        {
+            return Instance._GetManager<T>();
+        }
+
+        public T _GetManager<T>() where T : BaseManager
         {
             foreach (BaseManager manager in _managers)
             {

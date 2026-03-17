@@ -21,8 +21,8 @@ namespace RedHeadToolz.Tools
         protected virtual void Update()
         {   
             if(_gm.IsInitialized == false) return;
-
-            GeneralManager.Instance.GetManager<SceneManager>().AddScene(_sceneToLoad);
+            
+            GeneralManager.GetManager<SceneManager>().AddScene(_sceneToLoad);
         }
     }
 }

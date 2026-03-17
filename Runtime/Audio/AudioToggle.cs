@@ -15,7 +15,7 @@ namespace RedHeadToolz.Audio
         
         void Start()
         {
-            _Audio = GeneralManager.Instance.GetManager<AudioManager>().GetChannel(_channel);
+            _Audio = GeneralManager.GetManager<AudioManager>().GetChannel(_channel);
             _Audio.MuteChanged += UpdateMuted;
             UpdateMuted();
         }

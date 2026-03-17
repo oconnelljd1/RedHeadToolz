@@ -12,7 +12,7 @@ namespace RedHeadToolz.Audio
         
         void Start()
         {
-            _Audio = GeneralManager.Instance.GetManager<AudioManager>().GetChannel(_channel);
+            _Audio = GeneralManager.GetManager<AudioManager>().GetChannel(_channel);
             _Audio.VolumeChanged += UpdateVolume;
             _Audio.MuteChanged += UpdateVolume;
             UpdateVolume();

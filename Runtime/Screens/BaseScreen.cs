@@ -117,20 +117,20 @@ namespace RedHeadToolz.Screens
             Hide(() =>
             {
                 if (callback != null) callback();
-                GeneralManager.Instance.GetManager<ScreenManager>().CloseScreen(this);
+                GeneralManager.GetManager<ScreenManager>().CloseScreen(this);
             });
         }
 
         public virtual void Close()
         {
             Hide(()=>{
-                GeneralManager.Instance.GetManager<ScreenManager>().CloseScreen(this);
+                GeneralManager.GetManager<ScreenManager>().CloseScreen(this);
             });
         }
 
         public virtual void CloseImmediate()
         {
-            GeneralManager.Instance.GetManager<ScreenManager>().CloseScreen(this);
+            GeneralManager.GetManager<ScreenManager>().CloseScreen(this);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace RedHeadToolz.Time
             if(_paused == true) return;
             if(_duration == 0) return;
 
-            _elapsed += UnityEngine.Time.deltaTime; // * GeneralManager.Instance.GetManager<TimeManager>().TmeScale;
+            _elapsed += UnityEngine.Time.deltaTime; // * GeneralManager.GetManager<TimeManager>().TmeScale;
 
             if(_elapsed >= _duration)
             {
@@ -42,7 +42,7 @@ namespace RedHeadToolz.Time
 
                 if(_loop == true) return;
 
-                GeneralManager.Instance.GetManager<TimeManager>().RemoveTimer(_id);
+                GeneralManager.GetManager<TimeManager>().RemoveTimer(_id);
             }
         }
 
