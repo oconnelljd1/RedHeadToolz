@@ -53,7 +53,7 @@ public class ClosedCaptionsManager : BaseManager
         _data = data;
         _index = 0;
         _time = 0;
-        _text.text = LocalizationSettings.StringDatabase.GetLocalizedString("Aura3025Table", _data.captions[_index].TextKey);
+        _text.text = LocalizationSettings.StringDatabase.GetLocalizedString(_data.TableName, _data.captions[_index].TextKey);
         _root.SetActive(true);
         _callback = callback;
     }
@@ -68,7 +68,7 @@ public class ClosedCaptionsManager : BaseManager
             _index++;
             if (_index < _data.captions.Count)
             {
-                _text.text = LocalizationSettings.StringDatabase.GetLocalizedString("Aura3025Table", _data.captions[_index].TextKey);
+                _text.text = LocalizationSettings.StringDatabase.GetLocalizedString(_data.TableName, _data.captions[_index].TextKey);
             }
             else
             {
@@ -92,7 +92,7 @@ public class ClosedCaptionsManager : BaseManager
         ClosedCaptionsManager controller = (ClosedCaptionsManager)menuCommand.context;
 
         List<ClosedCaptionsData> newCaptions = new List<ClosedCaptionsData>();
-        string[] guids = AssetDatabase.FindAssets("t:ClosedCaptionsData", new[] { "Assets/ScriptableObjects/ClosedCaptions" });
+        string[] guids = AssetDatabase.FindAssets("t:ClosedCaptionsData", new[] { "Assets" });
         foreach (var guid in guids)
         {
             ClosedCaptionsData clip = (ClosedCaptionsData)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guid), typeof(ClosedCaptionsData));

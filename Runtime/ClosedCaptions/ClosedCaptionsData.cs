@@ -16,7 +16,10 @@ public class ClosedCaptionsData : ScriptableObject
     }
     
     [SerializeField] private string _id;
+    [SerializeField] private string _tableName;
+    [SerializeField] private List<ClosedCaption> _captions;
 
     public string Id => _id;
-    public List<ClosedCaption> captions = new List<ClosedCaption>();
+    public string TableName => _tableName;
+    public List<ClosedCaption> captions => _captions;
 }
