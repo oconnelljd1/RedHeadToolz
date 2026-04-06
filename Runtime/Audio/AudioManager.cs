@@ -50,7 +50,7 @@ namespace RedHeadToolz.Audio
 
         public AudioClip GetClip(string clip)
         {
-            var newClip = _clips.Find(x=>x.name == clip);
+            var newClip = _clips.Find(x=> x != null && x.name == clip);
             if(newClip == null)
                 RHTebug.LogError($"Clip {clip} not found!");
             return newClip;
