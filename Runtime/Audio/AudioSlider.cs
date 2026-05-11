@@ -9,14 +9,26 @@ namespace RedHeadToolz.Audio
         [SerializeField] private string _channel;
         [SerializeField] private Slider _slider;
         private AudioChannel _Audio;
+
+        private bool initialized = false;
         
         void Start()
         {
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            if(initialized) return;
+            initialized = true;
+
+            RHTebug.Log("AudioSlider Start");
             _Audio = GeneralManager.GetManager<AudioManager>().GetChannel(_channel);
             _Audio.VolumeChanged += UpdateVolume;
             _Audio.MuteChanged += UpdateVolume;
             UpdateVolume();
         }
+
 
         void OnDestroy()
         {
@@ -32,9 +44,10 @@ namespace RedHeadToolz.Audio
             else
                 _slider.value = _Audio.Volume;
         }
-
         public void SetVolume(float volume)
         {
+            Initialize();
+            RHTebug.Log("AudioSlider SetVolume");
             if (_Audio.Muted && volume == 0f) return; 
             
             RHTebug.Log($"SetVolume, volume: {volume}");
