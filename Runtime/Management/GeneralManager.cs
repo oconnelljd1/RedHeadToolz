@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RedHeadToolz.Debugging;
 using RedHeadToolz.Utils;
 using UnityEngine;
+using System;
 
 namespace RedHeadToolz
 {
@@ -19,6 +20,8 @@ namespace RedHeadToolz
         private ManagerInitializationStatus _initializationStatus;
         public ManagerInitializationStatus InitializationStatus => _initializationStatus;
         public bool IsInitialized => _initializationStatus == ManagerInitializationStatus.Success;
+
+        public Action OnManagersInitialized;
 
         [SerializeField] private List<BaseManager> _allManagers = new List<BaseManager>();
         [SerializeField] private List<BaseManager> _initManagers = new List<BaseManager>();
@@ -52,6 +55,7 @@ namespace RedHeadToolz
             }
 
             _initializationStatus = ManagerInitializationStatus.Success;
+            OnManagersInitialized?.Invoke();
         }
 
         public static T GetManager<T>() where T : BaseManager
